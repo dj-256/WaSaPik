@@ -2,90 +2,92 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title>Index</title>
+  <meta charset="utf-8">
+  <title>Index</title>
 
-    <!-- import the d3 library -->
-    <!-- <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script> -->
-    <script type='text/javascript' src='lib/d3.v5.min.js'></script>
+  <!-- import the d3 library -->
+  <!-- <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script> -->
+  <script type='text/javascript' src='lib/d3.v5.min.js'></script>
 
-    <!-- style sheet -->
-    <link rel="stylesheet" type="text/css" href="style.css">
+  <!-- style sheet -->
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-    <div id="my_dataviz"></div>
+  <div id="my_dataviz"></div>
+
+  <script>
+    // set the dimensions and margins of the graph
+    var margin = { top: 10, right: 20, bottom: 30, left: 50 },
+      width = 500 - margin.left - margin.right,
+      height = 420 - margin.top - margin.bottom;
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#my_dataviz")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+
+    //Read the data
+    d3.json("song.json").then(data => {
+      const parseTime = d3.timeParse("%Y-%m-%d");
+
+      var dates = [];
+      for (let obj of data) {
+        if (obj.publicationDate === "") continue;
+        d = parseTime(obj.publicationDate)
+        if (d.getFullYear() >= 1985)
+          dates.push(d);
+      }
+
+      const parseYear = d3.timeParse("%Y");
+
+      var domain = d3.extent(dates);
+
+      var dateScale = d3.scaleTime()
+        .domain(domain)
+        .range([1, width]);
+
+      const xAxis = d3.axisBottom(dateScale).tickFormat(d3.timeFormat("%Y-%m"));
+
+      svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+      // Add Y axis
+      var y_length = d3.scaleLinear()
+        .domain([90, 300])
+        .range([height, 0]);
 
 
+      svg.append("g")
+        .call(d3.axisLeft(y_length));
 
-    
-    <script>
-        // set the dimensions and margins of the graph
-var margin = {top: 10, right: 20, bottom: 30, left: 50},
-    width = 500 - margin.left - margin.right,
-    height = 420 - margin.top - margin.bottom;
-
-// append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
-
-//Read the data
-d3.json("song.json").then(data => {
-  const parseTime = d3.timeParse("%Y-%m-%d");
-
-var dates = [];
-for (let obj of data) {
-  dates.push(parseTime(obj.publicationDate));
-}
-
-const parseYear = d3.timeParse("%Y");
-
-var domain = d3.extent(dates);
-
-var dateScale = d3.scaleTime()
-  .domain(domain)
-  .range([1, width]);
-
-const xAxis = d3.axisBottom(dateScale).tickFormat(d3.timeFormat("%Y"));
-
-svg.append("g")
-  .attr("transform", "translate(0," + height + ")")
-  .call(xAxis);
-
-  // Add Y axis
-    var y_length = d3.scaleLinear()
-    .domain([100, 300])
-    .range([height,0]);
+      // Add a scale for bubble size
+      lyrics_scale = d3.scaleThreshold()
+        .domain([100, 150, 200, 250, 300])
+        .range([2.5, 5.0, 7.5, 10.0, 12.5]);
 
 
-  svg.append("g")
-    .call(d3.axisLeft(y_length));
+      let dataFilter = data.filter(d => d.publicationDate >= 1985 && d.length >= 90);
+      // Add dots
+      svg.append('g')
+        .selectAll("dot")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", function (d) { return dateScale(parseTime(d.publicationDate)); })
+        .attr("cy", function (d) { return y_length(d.length); })
+        .attr("r", function (d) { return lyrics_scale(d.lyrics); })
+        .style("fill", "#69b3a2")
+        .style("opacity", "0.7")
+        .attr("stroke", "black")
 
-  // Add a scale for bubble size
-  lyrics_scale = d3.scaleThreshold()
-                .domain([100, 150, 200, 250, 300])
-                .range([25, 50, 75, 100, 125]);
-
-  // Add dots
-  svg.append('g')
-    .selectAll("dot")
-    .data(data)
-    .enter()
-    .append("circle")
-      .attr("cx", function (d) { return dateScale(parseTime(d.publicationDate)); } )
-      .attr("cy", function (d) { return y_length(d.length); } )
-      .attr("r", function (d) { return lyrics_scale(d.lyrics); } )
-      .style("fill", "#69b3a2")
-      .style("opacity", "0.7")
-      .attr("stroke", "black")
-
-})
-</script>
+    })
+  </script>
 
 </body>
 
