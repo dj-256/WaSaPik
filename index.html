@@ -10,17 +10,26 @@
   <script type='text/javascript' src='lib/d3.v5.min.js'></script>
 
   <!-- style sheet -->
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 
 <body>
+  <header>
+  <nav class="navigation">
+    <ol>
+      <li class="menu"><a href="map.html">Map</a></li>
+      <li class="menu"><a href="td_index.html">Td</a></li>
+    </ol>
+  </nav>
+</header>
+
   <div id="my_dataviz"></div>
 
   <script>
     // set the dimensions and margins of the graph
     var margin = { top: 10, right: 20, bottom: 30, left: 50 },
-      width = 500 - margin.left - margin.right,
-      height = 420 - margin.top - margin.bottom;
+      width = 800 - margin.left - margin.right,
+      height = 720 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
