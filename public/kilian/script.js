@@ -265,8 +265,8 @@ var countryISOMapping = {
 }
 
 async function bmpByCountry() {
-    let songs = await loadJSON("../data/song.json");
-    let albums = await loadJSON("../data/album.json");
+    let songs = await loadJSON("/data/song.json");
+    let albums = await loadJSON("/data/album.json");
 
     let bmpCountryDic = {};
 
