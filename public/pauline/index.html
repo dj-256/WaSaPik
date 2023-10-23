@@ -14,15 +14,23 @@
 
 <body>
   <header>
-  <nav class="navigation">
-    <ol>      
-      <li class="menu"><a href="../index.html">Index</a></li>
-      <li class="menu"><a href="../kilian/index.html">Map</a></li>
-    </ol>
-  </nav>
-</header>
-
+    <nav class="navigation">
+      <ol>
+        <li class="menu"><a href="../index.html">Index</a></li>
+        <li class="menu"><a href="../kilian/index.html">Map</a></li>
+      </ol>
+    </nav>
+  </header>
+  <ul id="genre-filter">
+    <li onclick="filterData('Rock')">Rock</li>
+    <li onclick="filterData('Pop')">Pop</li>
+    <li onclick="filterData('Jazz')">Jazz</li>
+    <!-- Ajoutez d'autres genres selon vos besoins -->
+</ul>
+  <!-- Affiche les albums avec la durée moyenne d'un album en fonction du temps puis si on clique dessus ses chansons sur le mm graphique-->
   <div id="my_dataviz"></div>
+  
 
 </body>
+
 </html>
