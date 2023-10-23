@@ -16,9 +16,9 @@
 <body>
   <header>
   <nav class="navigation">
-    <ol>
-      <li class="menu"><a href="map.html">Map</a></li>
-      <li class="menu"><a href="td_index.html">Td</a></li>
+    <ol>      
+      <li class="menu"><a href="../index.html">Index</a></li>
+      <li class="menu"><a href="../kilian/index.html">Map</a></li>
     </ol>
   </nav>
 </header>
@@ -41,7 +41,7 @@
         "translate(" + margin.left + "," + margin.top + ")");
 
     //Read the data
-    d3.json("../song.json").then(data => {
+    d3.json("../data/song.json").then(data => {
       const parseTime = d3.timeParse("%Y-%m-%d");
 
       //preration for X axis
