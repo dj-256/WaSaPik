@@ -252,7 +252,6 @@ var countryISOMapping = {
     XKX: "XK"
 }
 
-
 window.onload = function() {
     var svg = d3.select("#world-map")
 
@@ -266,8 +265,6 @@ window.onload = function() {
     .translate([width / 2, height / 3]);
 
     d3.json("/data/bpmCountry.json").then(bmpByCountryDic => {
-        console.log("dqdqsd")
-        console.log(bmpByCountryDic)
         var colorScale = d3.scaleSequential(d3.interpolateViridis) 
         .domain([bmpByCountryDic.min, bmpByCountryDic.max]);
 
@@ -287,9 +284,8 @@ window.onload = function() {
                 .attr("d", d3.geoPath().projection(gfg))
                 .style("stroke", "#ffff")
                 .on("click", function(d) {
-                    var countryId = d.id; // Assurez-vous que votre fichier GeoJSON contient un champ id correspondant à chaque pays
-                    var bpm = bmpByCountryDic.countries[countryId];
-                    console.log("Pays: " + countryId + ", BPM: " + bpm);
+                    var countryId = d.id;
+                    var bpm = bmpByCountryDic.countries[countryISOMapping[d.id]]
                 });
         })
     })
