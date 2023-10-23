@@ -1,15 +1,3 @@
-function loadJSON(file) {
-    return new Promise((resolve, reject) => {
-        d3.json(file, (error, data) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(data);
-            }
-        });
-    });
-}
-
 var countryISOMapping = {
     AFG: "AF",
     ALA: "AX",
@@ -264,51 +252,8 @@ var countryISOMapping = {
     XKX: "XK"
 }
 
-async function bmpByCountry() {
-    let songs = await loadJSON("/data/song.json");
-    let albums = await loadJSON("/data/album.json");
 
-    let bmpCountryDic = {};
-
-    songs.forEach(function(song) {
-        let album = albums[song.id_album];
-
-        let bpm = Number(song.bpm);
-        let country = album.country;
-
-        if(bpm > 0 && country) {
-            if(country in bmpCountryDic) {
-                bmpCountryDic[country]["count"]++;
-                bmpCountryDic[country]["aggregation"] += bpm;
-            } 
-            else {
-                bmpCountryDic[country] = {
-                    "count": 1,
-                    "aggregation": bpm
-                }
-            }
-        }
-    });
-
-    let res = {
-        "countries": {},
-        "min": Infinity,
-        "max": -Infinity
-    }
-
-    for(let country in bmpCountryDic) {
-        let averageBmp = bmpCountryDic[country].aggregation / bmpCountryDic[country].count;
-        res["countries"][country] = averageBmp;
-        if(averageBmp < res["min"]) res["min"] = averageBmp;
-        if(averageBmp > res["max"]) res["max"] = averageBmp;
-    }
-        
-    return res;
-
-}
-
-
-window.onload = async function() {
+window.onload = function() {
     var svg = d3.select("#world-map")
 
     width = svg.attr("width"),  
@@ -320,44 +265,32 @@ window.onload = async function() {
     .center([0, 0])  
     .translate([width / 2, height / 3]);
 
-    bmpByCountryDic = await bmpByCountry();
-    console.log(bmpByCountryDic)
-    var colorScale = d3.scaleSequential(d3.interpolateViridis) 
-    .domain([bmpByCountryDic.min, bmpByCountryDic.max]);
-    
-    // Loading the json data  
-    d3.json("https://raw.githubusercontent.com/epistler999/GeoLocation/master/world.json",  
-    function (data) {  
-        // Draw the map  
-        svg.append("g")
-            .selectAll("path")
-            .data(data.features)
-            .enter().append("path")
-            .attr("fill", function(d) {
-                var countryId = countryISOMapping[d.id];
-                var bpm = bmpByCountryDic.countries[countryId];
-                return colorScale(bpm);
-            })
-            .attr("d", d3.geoPath().projection(gfg))
-            .style("stroke", "#ffff")
-            .on("click", function(d) {
-                var countryId = d.id; // Assurez-vous que votre fichier GeoJSON contient un champ id correspondant à chaque pays
-                var bpm = bmpByCountryDic.countries[countryId];
-                console.log("Pays: " + countryId + ", BPM: " + bpm);
-            });
+    d3.json("/data/bpmCountry.json").then(bmpByCountryDic => {
+        console.log("dqdqsd")
+        console.log(bmpByCountryDic)
+        var colorScale = d3.scaleSequential(d3.interpolateViridis) 
+        .domain([bmpByCountryDic.min, bmpByCountryDic.max]);
+
+        // Loading the json data  
+        d3.json("https://raw.githubusercontent.com/epistler999/GeoLocation/master/world.json").then(data => {
+            console.log("test")
+            // Draw the map  
+            svg.append("g")
+                .selectAll("path")
+                .data(data.features)
+                .enter().append("path")
+                .attr("fill", function(d) {
+                    var countryId = countryISOMapping[d.id];
+                    var bpm = bmpByCountryDic.countries[countryId];
+                    return colorScale(bpm);
+                })
+                .attr("d", d3.geoPath().projection(gfg))
+                .style("stroke", "#ffff")
+                .on("click", function(d) {
+                    var countryId = d.id; // Assurez-vous que votre fichier GeoJSON contient un champ id correspondant à chaque pays
+                    var bpm = bmpByCountryDic.countries[countryId];
+                    console.log("Pays: " + countryId + ", BPM: " + bpm);
+                });
+        })
     })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
