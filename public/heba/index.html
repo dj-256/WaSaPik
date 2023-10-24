@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Heb's vizualisation</title>
+    <script src="../lib/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+</head>
+<style>
+    /* set the CSS */
+
+    .node circle {
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 3px;
+    }
+
+    .node text {
+        font: 12px sans-serif;
+    }
+
+    .node--internal text {
+        text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+    }
+
+    .link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 2px;
+    }
+</style>
+
+<body>
+    <div id="my_dataviz"></div>
+
+    <script>
+
+        // set the dimensions and margins of the graph
+        var margin = { top: 10, right: 20, bottom: 30, left: 50 },
+            width = 800 - margin.left - margin.right,
+            height = 920 - margin.top - margin.bottom;
+
+        // append the svg object to the body of the page
+        var svg = d3.select("#my_dataviz")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+        d3.json("../data/song.json").then(data3 => {
+            var albumsIds = [...new Set(data3.map(d => d.id_album))];
+            d3.json("../data/album.json").then(data => {
+                //transform data to only keep those with a country
+                //format of the json: {albumsIds[i]: {}}
+                var data2 = {};
+                for (var i = 0; i < albumsIds.length; i++) {
+                    if (data[albumsIds[i]].country != "") {
+                        data2[albumsIds[i]] = data[albumsIds[i]];
+                    }
+                }
+                //print unique countries with d3js
+                var countries = [...new Set(Object.values(data2).map(d => d.country))];
+                console.log(countries);
+
+                d3.json("https://raw.githubusercontent.com/rapomon/geojson-places/master/data/continents/continents.json").then(continents => {
+                    //create a tree with the continents of the countries
+                    var tree2 = {
+                        "name": "World",
+                        "children": []
+                    };
+                    for (var i = 0; i < continents.length; i++) {
+                        var continent = continents[i];
+                        var continentName = continent.continent_name;
+                        var continentCode = continent.continent_code;
+                        var continentCountries = continent.countries;
+                        var continentChildren = [];
+                        for (var j = 0; j < continentCountries.length; j++) {
+                            var country = continentCountries[j];
+                            if (countries.includes(country)) {
+                                continentChildren.push({
+                                    "name": country
+                                });
+                            }
+                        }
+                        tree2.children.push({
+                            "name": continentName,
+                            "children": continentChildren
+                        });
+                    }
+                    console.log(tree2);
+
+                    //create d3js tree with a root at the center of the page
+                    var root2 = d3.hierarchy(tree2);
+                    root2.dx = 20;
+                    root2.dy = width / (root2.height + 1);
+                    d3.tree().nodeSize([root2.dx, root2.dy])(root2);
+
+                    //create links
+                    var links2 = root2.links();
+                    //create nodes
+                    var nodes2 = root2.descendants();
+
+                    //add tree to svg
+                    var g2 = svg.append("g")
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", 10)
+                        .attr("transform", "translate(" + root2.dy / 3 + "," + root2.dx * 22 + ")");
+
+                    //add links
+                    var link2 = g2.append("g")
+                        .attr("fill", "none")
+                        .attr("stroke", "#555")
+                        .attr("stroke-opacity", 0.4)
+                        .attr("stroke-width", 1.5)
+                        .selectAll("path")
+                        .data(links2)
+                        .join("path")
+                        .attr("d", d3.linkHorizontal()
+                            .x(d => d.y)
+                            .y(d => d.x));
+                    //add nodes
+                    var node2 = g2.append("g")
+                        .attr("stroke-linejoin", "round")
+                        .attr("stroke-width", 3)
+                        .selectAll("g")
+                        .data(nodes2)
+                        .join("g")
+                        .attr("transform", d => `translate(${d.y},${d.x})`);
+                    //add circles
+                    node2.append("circle")
+                        .attr("fill", d => d.children ? "#555" : "#999")
+                        .attr("r", 2.5);
+                    //add text
+                    node2.append("text")
+                        .attr("dy", "0.31em")
+                        .attr("x", d => d.children ? -6 : 6)
+                        .attr("text-anchor", d => d.children ? "end" : "start")
+                        .text(d => d.data.name)
+                        .clone(true).lower()
+                        .attr("stroke", "white");
+                    
+                });
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>
