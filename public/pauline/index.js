@@ -172,6 +172,7 @@ window.onload = async function () {
       .attr("cx", function (d) { return dateScale(parseTime(d.publicationDate)); })
       .attr("cy", function (d) { return y_length(d.length); })
       .attr("r", function (d) { return lyrics_scale(d.lyrics); })
+      .attr("class", "elseSongs")
       .style("fill", d => bpm_scale(d.bpm))
       .style("opacity", "0.7")
       .attr("stroke", "black")
@@ -185,6 +186,7 @@ window.onload = async function () {
       .attr("y", function (d) { return y_length(d.length); })
       .attr("width", function (d) { return lyrics_scale(d.lyrics); }) // Vous pouvez ajuster cette valeur en fonction de vos données
       .attr("height", function (d) { return lyrics_scale(d.lyrics); }) // Vous pouvez ajuster cette valeur en fonction de vos données
+      .attr("class", "popSongs")
       .style("fill", d => bpm_scale(d.bpm))
       .style("opacity", "0.7")
       .attr("stroke", "black");
@@ -206,6 +208,7 @@ window.onload = async function () {
         // Assurez-vous que bpm_scale est une échelle appropriée pour les couleurs
         return bpm_scale(d.bpm);
       })
+      .attr("class", "rockSongs")
       .style("opacity", "0.7")
       .attr("stroke", "black");
 
@@ -224,6 +227,7 @@ window.onload = async function () {
       .style("fill", function (d) {
         return bpm_scale(d.bpm);
       })
+      .attr("class", "metalSongs")
       .style("opacity", "0.7")
       .attr("stroke", "black");
   })
