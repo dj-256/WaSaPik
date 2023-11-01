@@ -1,19 +1,33 @@
+body {    
+    margin: 0px;
+}
+
 main {
     display: flex;
     flex-direction: row;
+    padding: 40px;
 }
 
 aside {
-    background-color: whitesmoke;
     width: 100%;
-    border: solid;
-    border-radius: 10px;
-
-    padding: 10px;
+    margin-left: 10px;
 }
 
+
 #world-map {
-    max-height: 95vh;
+    height: 500px;
+}
+
+.panel {
+    background-color: whitesmoke;
+    padding: 10px;
+    border: solid 1px;
+    border-radius: 10px;
+}
+
+.stat-name{
+    text-align: right;
+    font-weight: bold;
 }
 
 .country {
@@ -23,4 +37,9 @@ aside {
 .country:hover {
     cursor: pointer;
     stroke: yellow;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
 }
