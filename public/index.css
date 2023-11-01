@@ -1,30 +1,30 @@
 header {
     background-color: #f2f2f2;
     padding: 10px 0;
-  }
-  
-  .navigation {
+}
+
+.navigation {
     display: flex;
     justify-content: center;
-  }
-  ol {
+}
+
+ol {
     list-style-type: none;
     padding: 0;
     display: flex;
-  }
-  
-  .menu {
+}
+
+.menu {
     margin: 0 10px;
-  }
-  
-  .menu a {
+}
+
+.menu a {
     text-decoration: none;
     color: #333;
     padding: 8px 12px;
     border-radius: 5px;
-  }
-  
-  .menu a:hover {
+}
+
+.menu a:hover {
     background-color: #ddd;
-  }
-  
+}

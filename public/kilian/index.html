@@ -1,29 +1,24 @@
-
-
-<!DOCTYPE html>  
-<html lang="en">  
-  
-<head>  
-    <meta charset="UTF-8" />  
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
     <script src="./script.js"></script>
 
-    <link rel="stylesheet" href="./styles.css">
+  <link href="./styles.css" rel="stylesheet" />
+</head>
 
-</head>  
-  
 <body>
     <main>
-        <div>
-            <svg id="world-map" width="1024" height="900"></svg>  
-        </div>
-        <aside>
-            <h2 id="country-name">Click on a country to display data</h2>
-            <span id="bpm"></span>
-        </aside>
+      <div>
+        <svg height="900" id="world-map" width="1024"></svg>
+      </div>
+      <aside>
+        <h2 id="country-name">Click on a country to display data</h2>
+        <span id="bpm"></span>
+      </aside>
     </main>
-
-</body> 
+</body>
 </html>
