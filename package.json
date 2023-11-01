@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "format": "prettier --write \"public/**/*.{js,html,css}\""
+    "format": "prettier --write \"public/**/*.{js,html,css}\"",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
@@ -12,6 +13,11 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2",
     "prettier": "3.0.3"
+  },
+  "lint-staged": {
+    "*.{js,html,css}": "prettier --write"
   }
 }
