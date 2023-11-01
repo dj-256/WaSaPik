@@ -1,26 +1,26 @@
 main {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 aside {
-    background-color: whitesmoke;
-    width: 100%;
-    border: solid;
-    border-radius: 10px;
+  background-color: whitesmoke;
+  width: 100%;
+  border: solid;
+  border-radius: 10px;
 
-    padding: 10px;
+  padding: 10px;
 }
 
 #world-map {
-    max-height: 95vh;
+  max-height: 95vh;
 }
 
 .country {
-    stroke: white;
+  stroke: white;
 }
 
 .country:hover {
-    cursor: pointer;
-    stroke: yellow;
+  cursor: pointer;
+  stroke: yellow;
 }
