@@ -1,44 +1,44 @@
 window.onload = async function () {
-    countryStats = await d3.json("/data/json/bpmCountry.json");
-  countryISOMapping = await d3.json("/data/json/iso3.json");
+    let countryStats = await d3.json("/data/json/countryStats.json");
+    let countryISOMapping = await d3.json("/data/json/iso3.json");
 
+    let svg = d3.select("#world-map");
+    let width = svg.attr("width");
+    let height = svg.attr("height");
 
-  var svg = d3.select("#world-map");
+    let gfg = d3
+        .geoNaturalEarth()
+        .scale(width / 1.5 / Math.PI)
+        .rotate([0, 0])
+        .center([0, 0])
+        .translate([width / 2, height / 3]);
 
-  (width = svg.attr("width")), (height = svg.attr("height"));
-
-  var gfg = d3
-    .geoNaturalEarth()
-    .scale(width / 1.5 / Math.PI)
-    .rotate([0, 0])
-    .center([0, 0])
-    .translate([width / 2, height / 3]);
-
-    var colorScale = d3.scaleSequential(d3.interpolateViridis) 
-    .domain([countryStats.min_bpm, countryStats.max_bpm]);
+    let colorScale = d3.scaleSequential(d3.interpolateViridis)
+        .domain([countryStats.min_bpm, countryStats.max_bpm]);
 
     d3.json("https://raw.githubusercontent.com/epistler999/GeoLocation/master/world.json").then(data => {
         svg.append("g")
             .selectAll("path")
             .data(data.features)
             .enter().append("path")
-            .attr("fill", function(d) {
-                if(!countryISOMapping[d.id])
+            .attr("fill", function (d) {
+                if (!countryISOMapping[d.id])
                     return;
 
                 var countryId = countryISOMapping[d.id].iso2;
 
-                if(!countryStats.countries[countryId])
+                if (!countryStats.countries[countryId])
                     return;
-
+                console.log(countryStats.countries[countryId])
                 var bpm = countryStats.countries[countryId].average_bpm;
+                
                 return colorScale(bpm);
             })
             .attr("d", d3.geoPath().projection(gfg))
             .attr("class", "country")
-            .on("click", function(d) {
+            .on("click", function (d) {
                 // Text info
-                if(!countryISOMapping[d.id]) return;
+                if (!countryISOMapping[d.id]) return;
                 let countryName = countryISOMapping[d.id].name;
                 let countryStat = countryStats.countries[countryISOMapping[d.id].iso2];
                 if (!countryStat)
@@ -47,9 +47,9 @@ window.onload = async function () {
                 let averageLyrics = countryStat.average_lyrics;
 
                 document.getElementById("country-name").innerText = countryName;
-                document.getElementById("bpm").innerText = Math.round(averageBpm) + " bpm" 
+                document.getElementById("bpm").innerText = Math.round(averageBpm) + " bpm"
                 document.getElementById("lyrics").innerText = Math.round(averageLyrics) + " words"
-                
+
                 console.log(countryStat.genres)
                 document.getElementById("genre-data").innerText = countryStat.genre_data;
                 document.getElementById("genres-count").innerText = countryStat.genres_count;
@@ -57,8 +57,8 @@ window.onload = async function () {
                 // Graph
                 var chartSvg = d3.select("#country-char")
                 chartSvg.selectAll("*").remove();
-                
-                if(countryStat.genres_count == 0)
+
+                if (countryStat.genres_count == 0)
                     return;
 
 
@@ -98,11 +98,11 @@ window.onload = async function () {
                     .attr("transform", `translate(0, ${chartHeight - marginBottom})`)
                     .call(xAxis)
                     .selectAll("text")
-                    .style("text-anchor", "end") 
+                    .style("text-anchor", "end")
                     .attr("dx", "-1em")
                     .attr("dy", "-.6em")
                     .attr("transform", "rotate(-90)");
-                
+
                 const gy = chartSvg.append("g")
                     .attr("transform", `translate(${marginLeft},0)`)
                     .call(d3.axisLeft(y).ticks(10 > maxY ? maxY : 10).tickFormat(d3.format("d")))
