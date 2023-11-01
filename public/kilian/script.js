@@ -1,18 +1,18 @@
-window.onload = async function() {
-    countryStats = await d3.json("/data/countryStats.json");
-    countryISOMapping = await d3.json("/data/iso3.json");
+window.onload = async function () {
+    countryStats = await d3.json("/data/json/bpmCountry.json");
+  countryISOMapping = await d3.json("/data/json/iso3.json");
 
-    var svg = d3.select("#world-map")
 
-    width = svg.attr("width"),  
-    height = svg.attr("height");  
-    
-    var gfg = d3.geoNaturalEarth() 
-    .scale(width / 1.5 / Math.PI)  
-    .rotate([0, 0])  
-    .center([0, 0])  
+  var svg = d3.select("#world-map");
+
+  (width = svg.attr("width")), (height = svg.attr("height"));
+
+  var gfg = d3
+    .geoNaturalEarth()
+    .scale(width / 1.5 / Math.PI)
+    .rotate([0, 0])
+    .center([0, 0])
     .translate([width / 2, height / 3]);
-
 
     var colorScale = d3.scaleSequential(d3.interpolateViridis) 
     .domain([countryStats.min_bpm, countryStats.max_bpm]);
@@ -110,3 +110,4 @@ window.onload = async function() {
             });
     })
 }
+

@@ -31,12 +31,12 @@ aside {
 }
 
 .country {
-    stroke: white;
+  stroke: white;
 }
 
 .country:hover {
-    cursor: pointer;
-    stroke: yellow;
+  cursor: pointer;
+  stroke: yellow;
 }
 
 .flex-col {

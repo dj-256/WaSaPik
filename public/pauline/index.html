@@ -1,36 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Index</title>
-
   <!-- import the d3 library -->
-  <script type='text/javascript' src='../lib/d3.v5.min.js'></script>
+  <script src="../lib/d3.v5.min.js" type="text/javascript"></script>
 
-  <link rel="stylesheet" type="text/css" href="index.css">
+  <link href="index.css" rel="stylesheet" type="text/css" />
   <script src="./index.js"></script>
 </head>
-
 <body>
   <header>
     <nav class="navigation">
       <ol>
-        <li class="menu"><a href="../index.html">Index</a></li>
+        <li class="menu"><a href="../index.html">Accueil</a></li>
         <li class="menu"><a href="../kilian/index.html">Map</a></li>
+        <li class="menu"><a>Nuage de Point</a></li>
       </ol>
     </nav>
   </header>
-  <ul id="genre-filter">
-    <li onclick="filterData('Rock')">Rock</li>
-    <li onclick="filterData('Pop')">Pop</li>
-    <li onclick="filterData('Jazz')">Jazz</li>
-    <!-- Ajoutez d'autres genres selon vos besoins -->
-</ul>
+  <select id="genre-filter" name="genre" onchange="filterData();">
+    <option selected>Chansons sans genre</option>
+    <option>Metal</option>
+    <option>Pop</option>
+    <option>Rock</option>
+  <select>
   <!-- Affiche les albums avec la durée moyenne d'un album en fonction du temps puis si on clique dessus ses chansons sur le mm graphique-->
   <div id="my_dataviz"></div>
   
-
 </body>
-
 </html>

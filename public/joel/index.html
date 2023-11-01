@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link href="../data/images/logo_amazon.png" rel="preload" as="image" />
+    <link href="../data/images/logo_itunes.png" rel="preload" as="image" />
+    <link href="../data/images/logo_deezer.png" rel="preload" as="image" />
+    <link
+      href="../data/images/logo_hype%20machine.png"
+      rel="preload"
+      as="image"
+    />
+    <link href="../data/images/logo_pandora.png" rel="preload" as="image" />
+    <link href="../data/images/logo_spotify.png" rel="preload" as="image" />
+    <link href="../data/images/logo_youtube.png" rel="preload" as="image" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Helvetica Neue", sans-serif;
+      }
+
+      .filterButton {
+        transition:
+          background-color 0.2s ease-in-out,
+          color 0.2s ease-in-out;
+      }
+
+      .filterButton.active {
+        background-color: #4433ff;
+        color: white;
+      }
+
+      .filterButton {
+        background: none;
+        border: #4433ff solid 2px;
+        color: #4433ff;
+      }
+    </style>
+    <title>Services de streaming</title>
+  </head>
+  <body>
+    <script src="script.js" type="module"></script>
+    <div id="main">
+      <svg id="container">
+        <!-- colors: #BCB6FF #B8E1FF #A9FFF7 #94FBAB #82ABA1 -->
+        <defs>
+          <linearGradient id="gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" stop-color="#BCB6FF" />
+            <stop offset="100%" stop-color="#B8E1FF" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </body>
+</html>

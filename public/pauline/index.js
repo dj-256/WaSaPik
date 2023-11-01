@@ -10,95 +10,32 @@ function loadJSON(file) {
   });
 }
 
+const genreType = ["Chansons sans genre", "Metal", "Pop", "Rock"];
+const genreID = ["noGenre","metal", "pop", "rock"];
 
-/*window.onload = async function(){
-// set the dimensions and margins of the graph
-var margin = { top: 10, right: 20, bottom: 30, left: 50 },
-width = 1000 - margin.left - margin.right,
-height = 720 - margin.top - margin.bottom;
-
-// append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-.append("svg")
-.attr("width", width + margin.left + margin.right)
-.attr("height", height + margin.top + margin.bottom)
-.append("g")
-.attr("transform",
-  "translate(" + margin.left + "," + margin.top + ")");
-
-//Read the data
-d3.json("../data/album.json").then(data => {
-  const parseTime = d3.timeParse("%Y-%m-%d");
-
-  //preration for X axis
-  var dates = []
-
-console.log(Object.keys(data))
-  for (let obj of data) {
-    if (obj.publicationDate === "") continue;
+//Display the selected genre
+function filterData(){
+  let select = document.getElementsByName("genre")[0];
+  let choice = select.selectedIndex;
+  let value = select.options[choice].value;
+  for(let i = 0; i<genreType.length; i++){
+    let element = document.getElementById(genreID[i])
+    if (value === genreType[i]){
+      element.style.display = "initial";
+    }
     else{
-    d = parseTime(obj.publicationDate)
-    console.log(obj.publicationDate)
-    if (d.getFullYear() >= 1985)
-      dates.push(d);}
+      element.style.display = "none";
+    }
   }
-
-  const parseYear = d3.timeParse("%Y");
-
-  var domain = d3.extent(dates);
-
-  var dateScale = d3.scaleTime()
-    .domain(domain)
-    .range([1, width]);
-
-  const xAxis = d3.axisBottom(dateScale).tickFormat(d3.timeFormat("%Y-%m"));
-  xAxis.ticks(d3.timeYear.every(1));
-
-  svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis);
-
-  // Add Y axis
-  var y_length = d3.scaleLinear()
-    .domain([90, 300])
-    .range([height, 0]);
-
-  svg.append("g")
-    .call(d3.axisLeft(y_length));
-
-  // Add a scale for bubble size
-  lyrics_scale = d3.scaleThreshold()
-    .domain([100, 150, 200, 250, 300])
-    .range([2.5, 5.0, 7.5, 10.0, 12.5]);
-
-  //couleur TODO better scale
-  let bpm_scale = d3.scaleLinear([0, 100], ["red", "blue"]).unknown("#ccc");
-
-
-  let dataFilter = data.filter(d => d.publicationDate >= 1985 && d.totalLength >= 90);
-  // Add dots
-  svg.append('g')
-    .selectAll("dot")
-    .data(data)
-    .enter()
-    .append("circle")
-    .attr("cx", function (d) { return dateScale(parseTime(d.publicationDate)); })
-    .attr("cy", function (d) { return y_length(d.totalLength); })
-    .attr("r", function (d) { return lyrics_scale(len(d.songs)); })
-    .style("fill", d => bpm_scale(0))
-    .style("opacity", "0.7")
-    .attr("stroke", "black")
-})
-}*/
-
+}
 
 window.onload = async function () {
-  // set the dimensions and margins of the graph
+  //Dimensions and margins of the graph
   var margin = { top: 10, right: 20, bottom: 30, left: 50 },
     width = 1000 - margin.left - margin.right,
     height = 720 - margin.top - margin.bottom;
 
-  // append the svg object to the body of the page
+  //Append the svg object to the body of the page
   var svg = d3.select("#my_dataviz")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -107,14 +44,12 @@ window.onload = async function () {
     .attr("transform",
       "translate(" + margin.left + "," + margin.top + ")");
 
-  //Read the data
-  d3.json("../data/songWithGenre.json").then(data => {
+  //Read the data & print data
+  d3.json("../data/json/songWithGenre.json").then(data => {
     const parseTime = d3.timeParse("%Y-%m-%d");
 
-    songs = []
-
     let dataFilter = []
-    //preration for X axis
+    //preparation for X axis
     var dates = [];
     for (let obj of data) {
       if (obj.publicationDate === "") continue;
@@ -163,8 +98,10 @@ window.onload = async function () {
     const metalSongs = dataFilter.filter(d => d.genre.includes("Metal"));
     const elseSongs = dataFilter.filter(d => !(d.genre.includes("Pop") || d.genre.includes("Rock") || d.genre.includes("Metal")))
 
-    // Add dots
+    //Songs without genre
     svg.append('g')
+      //id on the container to be able to toggle display
+      .attr("id","noGenre")
       .selectAll("dot")
       .data(elseSongs)
       .enter()
@@ -176,20 +113,24 @@ window.onload = async function () {
       .style("opacity", "0.7")
       .attr("stroke", "black")
 
+    //Pop songs
     svg.append('g')
+      .attr("id","pop")
       .selectAll("rect")
       .data(popSongs)
       .enter()
       .append("rect")
       .attr("x", function (d) { return dateScale(parseTime(d.publicationDate)); })
       .attr("y", function (d) { return y_length(d.length); })
-      .attr("width", function (d) { return lyrics_scale(d.lyrics); }) // Vous pouvez ajuster cette valeur en fonction de vos données
-      .attr("height", function (d) { return lyrics_scale(d.lyrics); }) // Vous pouvez ajuster cette valeur en fonction de vos données
+      .attr("width", function (d) { return lyrics_scale(d.lyrics); })
+      .attr("height", function (d) { return lyrics_scale(d.lyrics); }) 
       .style("fill", d => bpm_scale(d.bpm))
       .style("opacity", "0.7")
       .attr("stroke", "black");
 
+    //Rock songs
     svg.append('g')
+      .attr("id","rock")
       .selectAll("path")
       .data(rockSongs)
       .enter()
@@ -199,17 +140,17 @@ window.onload = async function () {
         return "translate(" + dateScale(parseTime(d.publicationDate)) + "," + y_length(d.length) + ")";
       })
       .attr("r", function (d) {
-        // Vous pouvez ajuster cette valeur en fonction de vos données
         return lyrics_scale(d.lyrics);
       })
       .style("fill", function (d) {
-        // Assurez-vous que bpm_scale est une échelle appropriée pour les couleurs
         return bpm_scale(d.bpm);
       })
       .style("opacity", "0.7")
       .attr("stroke", "black");
 
+    //Metal songs
     svg.append('g')
+      .attr("id","metal")
       .selectAll("path")
       .data(metalSongs)
       .enter()
