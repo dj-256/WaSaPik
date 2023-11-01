@@ -1,6 +1,6 @@
 window.onload = async function () {
-  bmpByCountryDic = await d3.json("/data/bpmCountry.json");
-  countryISOMapping = await d3.json("/data/iso3.json");
+  bmpByCountryDic = await d3.json("/data/json/bpmCountry.json");
+  countryISOMapping = await d3.json("/data/json/iso3.json");
 
   var svg = d3.select("#world-map");
 

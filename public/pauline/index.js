@@ -106,7 +106,7 @@ window.onload = async function () {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   //Read the data
-  d3.json("../data/songWithGenre.json").then((data) => {
+  d3.json("../data/json/songWithGenre.json").then((data) => {
     const parseTime = d3.timeParse("%Y-%m-%d");
 
     songs = [];
