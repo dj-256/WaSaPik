@@ -1,39 +1,40 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="utf-8" />
+  <head>
+    <meta charset="utf-8" />
     <title>Heb's vizualisation</title>
     <script src="../lib/d3.v5.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
-</head>
-<style>
+  </head>
+  <style>
     /* set the CSS */
 
     .node circle {
-        fill: #fff;
-        stroke: steelblue;
-        stroke-width: 3px;
+      fill: #fff;
+      stroke: steelblue;
+      stroke-width: 3px;
     }
 
     .node text {
-        font: 12px sans-serif;
+      font: 12px sans-serif;
     }
 
     .node--internal text {
-        text-shadow: 0 1px 0 #fff,
+      text-shadow:
+        0 1px 0 #fff,
         0 -1px 0 #fff,
         1px 0 0 #fff,
         -1px 0 0 #fff;
     }
 
     .link {
-        fill: none;
-        stroke: #ccc;
-        stroke-width: 2px;
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 2px;
     }
-</style>
+  </style>
 
-<body>
+  <body>
     <div id="my_dataviz"></div>
 
     <script>
@@ -51,9 +52,9 @@
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      d3.json("../data/song.json").then((data3) => {
+      d3.json("../data/json/song.json").then((data3) => {
         var albumsIds = [...new Set(data3.map((d) => d.id_album))];
-        d3.json("../data/album.json").then((data) => {
+        d3.json("../data/json/album.json").then((data) => {
           //transform data to only keep those with a country
           //format of the json: {albumsIds[i]: {}}
           var data2 = {};
@@ -64,17 +65,17 @@
           }
           //print unique countries with d3js
           var countries = [
-            ...new Set(Object.values(data2).map((d) => d.country))
+            ...new Set(Object.values(data2).map((d) => d.country)),
           ];
           console.log(countries);
 
           d3.json(
-            "https://raw.githubusercontent.com/rapomon/geojson-places/master/data/continents/continents.json"
+            "https://raw.githubusercontent.com/rapomon/geojson-places/master/data/continents/continents.json",
           ).then((continents) => {
             //create a tree with the continents of the countries
             var tree2 = {
               name: "World",
-              children: []
+              children: [],
             };
             for (var i = 0; i < continents.length; i++) {
               var continent = continents[i];
@@ -86,13 +87,13 @@
                 var country = continentCountries[j];
                 if (countries.includes(country)) {
                   continentChildren.push({
-                    name: country
+                    name: country,
                   });
                 }
               }
               tree2.children.push({
                 name: continentName,
-                children: continentChildren
+                children: continentChildren,
               });
             }
             console.log(tree2);
@@ -115,7 +116,7 @@
               .attr("font-size", 10)
               .attr(
                 "transform",
-                "translate(" + root2.dy / 3 + "," + root2.dx * 22 + ")"
+                "translate(" + root2.dy / 3 + "," + root2.dx * 22 + ")",
               );
 
             //add links
@@ -163,5 +164,5 @@
         });
       });
     </script>
-</body>
+  </body>
 </html>
