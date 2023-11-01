@@ -26,6 +26,7 @@
       </ol>
     </nav>
   </header>
+  <div id="filters">
   <select id="genre-filter" name="genre" onchange="filterData();">
     <option selected="selected">Multiples genres</option>
     <option>Metal</option>
@@ -40,9 +41,37 @@
         <input id="maxInput" type="number" id="lyricsRange" min="100" max="900" step="10" value="900"
           onchange="updateChart();">
       </div>
-
+</div>
+<div id="graph" style="display: flex; align-items: center;">
       <!-- Affiche les albums avec la durée moyenne d'un album en fonction du temps puis si on clique dessus ses chansons sur le mm graphique-->
-      <div id="my_dataviz"></div>
+      <div id="my_dataviz" style="display: inline-block;"></div>
+      <table>
+        <tr>
+          <th>BPM</th>
 
+          <th>Couleur</th>
+        </tr>
+        <tr>
+          <td>50 - 100</td>
+          <td style="background-color: #B8E1FF;"></td>
+        </tr>
+        <tr>
+          <td>100 - 150</td>
+          <td style="background-color: #A9FFF7;"></td>
+        </tr>
+        <tr>
+          <td>150 - 200</td>
+          <td style="background-color: #94FBAB;"></td>
+        </tr>
+        <tr>
+          <td>200+</td>
+          <td style="background-color: #82ABA1;"></td>
+        </tr>
+        <tr>
+          <td>Non spécifié</td>
+          <td style="background-color: rgb(205, 195, 221);"></td>
+        </tr>
+      </table>
+</div>
 </body>
 </html>

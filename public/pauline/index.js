@@ -47,7 +47,23 @@ function createsvg() {
     .append("g")
     .attr("transform",
       "translate(" + margin.left + "," + margin.top + ")");
-  return svg;
+  
+
+  svg.append("text")
+   .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
+   .style("text-anchor", "middle")
+   .text("Année de parution");
+
+// Ajouter un titre à l'axe des ordonnées (Y)
+svg.append("text")
+   .attr("transform", "rotate(-90)")
+   .attr("y", 0 - margin.left)
+   .attr("x",0 - (height / 2))
+   .attr("dy", "1em")
+   .style("text-anchor", "middle")
+   .text("Longueur de la chanson (secondes)");
+   
+   return svg;
 }
 
 
@@ -68,7 +84,7 @@ window.onload = async function () {
     for (let obj of data) {
       if (obj.publicationDate === "") continue;
       d = parseTime(obj.publicationDate)
-      if (d.getFullYear() >= 1990) {
+      if (d.getFullYear() >= 1990 && d.getFullYear() <= 2020) {
         dates.push(d);
         dataFilter.push(obj);
       }
@@ -101,7 +117,7 @@ window.onload = async function () {
 
     //Color scale for the BPM of the song
     //couleur TODO
-    let bpm_scale = d3.scaleLinear([0, 100], ["red", "blue"]).unknown("#ccc");
+    let bpm_scale = d3.scaleLinear([50, 100, 150, 200], ["#B8E1FF", "#A9FFF7", "#94FBAB", "#82ABA1"]).interpolate(d3.interpolateHcl);;
 
     dataFilter = dataFilter.filter(d => ((d.length >= 95) && (d.length < 300) && (d.lyrics > 90) && (d.lyrics < 900)));
 
