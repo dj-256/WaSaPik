@@ -11,22 +11,25 @@ function loadJSON(file) {
 }
 
 const genreType = ["Chansons sans genre", "Metal", "Pop", "Rock"];
-const genreID = ["noGenre","metal", "pop", "rock"];
+const genreID = ["noGenre", "metal", "pop", "rock"];
+let currentGenre = 0;
 
 //Display the selected genre
-function filterData(){
+function filterData() {
   let select = document.getElementsByName("genre")[0];
   let choice = select.selectedIndex;
   let value = select.options[choice].value;
-  for(let i = 0; i<genreType.length; i++){
+  for (let i = 0; i < genreType.length; i++) {
     let element = document.getElementById(genreID[i])
-    if (value === genreType[i]){
+    if (value === genreType[i]) {
       element.style.display = "initial";
+      currentGenre = i;
     }
-    else{
+    else {
       element.style.display = "none";
     }
   }
+  updateChart();
 }
 
 window.onload = async function () {
@@ -64,7 +67,7 @@ window.onload = async function () {
 
     var domain = d3.extent(dates);
 
-    var dateScale = d3.scaleTime()
+    let dateScale = d3.scaleTime()
       .domain(domain)
       .range([1, width]);
 
@@ -84,7 +87,7 @@ window.onload = async function () {
       .call(d3.axisLeft(y_length));
 
     // Add a scale for bubble size
-    lyrics_scale = d3.scaleThreshold()
+    let lyrics_scale = d3.scaleThreshold()
       .domain([100, 150, 200, 250, 300])
       .range([2.5, 5.0, 7.5, 10.0, 12.5]);
 
@@ -101,7 +104,7 @@ window.onload = async function () {
     //Songs without genre
     svg.append('g')
       //id on the container to be able to toggle display
-      .attr("id","noGenre")
+      .attr("id", "noGenre")
       .selectAll("dot")
       .data(elseSongs)
       .enter()
@@ -110,12 +113,13 @@ window.onload = async function () {
       .attr("cy", function (d) { return y_length(d.length); })
       .attr("r", function (d) { return lyrics_scale(d.lyrics); })
       .style("fill", d => bpm_scale(d.bpm))
+      .attr("lyrics", function (d) { return d.lyrics })
       .style("opacity", "0.7")
       .attr("stroke", "black")
 
     //Pop songs
     svg.append('g')
-      .attr("id","pop")
+      .attr("id", "pop")
       .selectAll("rect")
       .data(popSongs)
       .enter()
@@ -123,14 +127,15 @@ window.onload = async function () {
       .attr("x", function (d) { return dateScale(parseTime(d.publicationDate)); })
       .attr("y", function (d) { return y_length(d.length); })
       .attr("width", function (d) { return lyrics_scale(d.lyrics); })
-      .attr("height", function (d) { return lyrics_scale(d.lyrics); }) 
+      .attr("height", function (d) { return lyrics_scale(d.lyrics); })
       .style("fill", d => bpm_scale(d.bpm))
+      .attr("lyrics", function (d) { return d.lyrics })
       .style("opacity", "0.7")
       .attr("stroke", "black");
 
     //Rock songs
     svg.append('g')
-      .attr("id","rock")
+      .attr("id", "rock")
       .selectAll("path")
       .data(rockSongs)
       .enter()
@@ -145,17 +150,19 @@ window.onload = async function () {
       .style("fill", function (d) {
         return bpm_scale(d.bpm);
       })
+      .attr("lyrics", function (d) { return d.lyrics })
+      .attr("class", "rock")
       .style("opacity", "0.7")
       .attr("stroke", "black");
 
     //Metal songs
     svg.append('g')
-      .attr("id","metal")
+      .attr("id", "metal")
       .selectAll("path")
       .data(metalSongs)
       .enter()
       .append("path")
-      .attr("d", d3.symbol().type(d3.symbolTriangle))  
+      .attr("d", d3.symbol().type(d3.symbolTriangle))
       .attr("transform", function (d) {
         return "translate(" + dateScale(parseTime(d.publicationDate)) + "," + y_length(d.length) + ")";
       })
@@ -165,9 +172,77 @@ window.onload = async function () {
       .style("fill", function (d) {
         return bpm_scale(d.bpm);
       })
+      .attr("class", "metal")
+      .attr("lyrics", function (d) { return d.lyrics })
       .style("opacity", "0.7")
       .attr("stroke", "black");
+
   })
 }
 
+function getMinMaxValue(){
+  let minInput = document.getElementById("minInput");
+  let minValue = minInput.value;
+
+  let maxInput = document.getElementById("maxInput");
+  let maxValue = maxInput.value;
+  if(minValue < maxValue){
+    return [minValue,maxValue];
+  }
+  else{
+    return [maxValue,minValue];
+  }
+}
+
+
+function updateChart() {
+  let value = getMinMaxValue();
+  let minValue = value[0];
+  let maxValue = value[1];
+
+  let type;
+  switch (currentGenre) {
+    case 0:
+      type = "circle";
+      break;
+    case 1:
+      type = "path";
+      break;
+    case 2:
+      type = "rect"
+      break;
+    case 3:
+      type = "path";
+      break;
+    default:
+      break;
+  }
+
+  let nodes = d3.selectAll(type);
+  let displayedNodes;
+  let hiddenNodes;
+
+  if (type == "path") {
+    displayedNodes = nodes.filter(function () {
+      return ((parseInt(d3.select(this).attr("lyrics")) >= minValue) && (d3.select(this).attr("class") === genreID[currentGenre]) && (parseInt(d3.select(this).attr("lyrics")) <= maxValue));
+    });
+
+    hiddenNodes = nodes.filter(function () {
+      return !((parseInt(d3.select(this).attr("lyrics")) >= minValue) && (d3.select(this).attr("class") === genreID[currentGenre]) && (parseInt(d3.select(this).attr("lyrics")) <= maxValue));
+    })
+  }
+
+  else {
+    displayedNodes = nodes.filter(function () {
+      return ((parseInt(d3.select(this).attr("lyrics")) >= minValue) && (parseInt(d3.select(this).attr("lyrics")) <= maxValue));
+    });
+
+    hiddenNodes = nodes.filter(function () {
+      return !((parseInt(d3.select(this).attr("lyrics")) >= minValue) && (parseInt(d3.select(this).attr("lyrics")) <= maxValue));
+    })
+  }
+
+  hiddenNodes.style("display", "none");
+  displayedNodes.style("display", "initial");
+}
 

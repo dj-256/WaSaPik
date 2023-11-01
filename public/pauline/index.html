@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
   <meta charset="utf-8" />
   <title>Index</title>
@@ -9,24 +10,39 @@
   <link href="index.css" rel="stylesheet" type="text/css" />
   <script src="./index.js"></script>
 </head>
+
 <body>
   <header>
     <nav class="navigation">
       <ol>
-        <li class="menu"><a href="../index.html">Accueil</a></li>
         <li class="menu"><a href="../kilian/index.html">Map</a></li>
-        <li class="menu"><a>Nuage de Point</a></li>
+        <li class="menu">
+          <a>Nuage de Point</a>
+        </li>
+        <li class="menu">
+          <a href="../joel/index.html">Services de streaming</a>
+        </li>
+        <li class="menu"><a href="../heba/index.html">Tree</a></li>
       </ol>
     </nav>
   </header>
   <select id="genre-filter" name="genre" onchange="filterData();">
-    <option selected>Chansons sans genre</option>
+    <option selected="selected">Chansons sans genre</option>
     <option>Metal</option>
     <option>Pop</option>
     <option>Rock</option>
-  <select>
-  <!-- Affiche les albums avec la durée moyenne d'un album en fonction du temps puis si on clique dessus ses chansons sur le mm graphique-->
-  <div id="my_dataviz"></div>
-  
+    <select>
+      <div style="display: inline-block;">
+        <span>Longeur des lyrics min</span>
+        <input id="minInput" type="number" id="lyricsRange" min="90" max="890" step="10" value="90"
+          onchange="updateChart();">
+        <span>Longeur des lyrics max</span>
+        <input id="maxInput" type="number" id="lyricsRange" min="100" max="900" step="10" value="90"
+          onchange="updateChart();">
+      </div>
+
+      <!-- Affiche les albums avec la durée moyenne d'un album en fonction du temps puis si on clique dessus ses chansons sur le mm graphique-->
+      <div id="my_dataviz"></div>
+
 </body>
 </html>
