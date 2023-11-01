@@ -28,3 +28,7 @@ ol {
 .menu a:hover {
   background-color: #ddd;
 }
+
+#pop, #metal, #rock{
+  display: none;
+}
