@@ -32,6 +32,19 @@
       stroke: #ccc;
       stroke-width: 2px;
     }
+
+    .tooltip {
+      position: absolute;
+      text-align: center;
+      width: 60px;
+      height: fit-content;
+      padding: 2px;
+      font: 12px sans-serif;
+      background: lightsteelblue;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+    }
   </style>
 
   <body>
@@ -39,6 +52,7 @@
 
     <script>
       window.onload = async function () {
+        const countriesStats = await d3.json("../data/json/countryStats.json");
         var tree2 = {
           name: "World",
           children: [],
@@ -188,6 +202,18 @@
                   // Update the nodes...
                   const node = svg
                     .selectAll("g.node")
+                    //change its thickness depending on the number of children
+                    .style("height", function (d) {
+                      return (
+                        (d.children
+                          ? d.children.length
+                          : d._children
+                          ? d._children.length
+                          : 0) *
+                          0.5 +
+                        "px"
+                      );
+                    })
                     .data(nodes, function (d) {
                       return d.id || (d.id = ++i);
                     });
@@ -203,7 +229,45 @@
                     .attr("transform", function (d) {
                       return "translate(" + source.y + "," + source.x + ")";
                     })
-                    .on("click", click);
+                    .on("click", click)
+                    //add tooltip when hovering over a node and write the number of children
+                    .on("mouseover", function (d) {
+                      var tooltip = d3
+                        .select("#my_dataviz")
+                        .append("div")
+                        .attr("class", "tooltip")
+                        .style("opacity", 0);
+
+                      tooltip.transition().duration(200).style("opacity", 0.9);
+
+                      tooltip
+                        .html(
+                          /*function getBpm(d) {
+                          console.log("????????? " + d.data);
+                          var bpm = 0;
+                          if (d.data.name in countriesStats) {
+                            bpm = countriesStats[d.data.name].bpm;
+                          } else if (d.data.name in data2) {
+                            bpm = data2[d.data.name].bpm;
+                          }
+                          return bpm;
+                        } +*/
+                          "BPM: " +
+                            //getBpm(d) +
+                            "<br/>" +
+                            "Number of objects: " +
+                            (d.children
+                              ? d.children.length
+                              : d._children
+                              ? d._children.length
+                              : 0),
+                        )
+                        .style("left", d3.event.pageX + "px")
+                        .style("top", d3.event.pageY + "px");
+                    })
+                    .on("mouseout", function (d) {
+                      d3.select(".tooltip").remove();
+                    });
 
                   // Add Circle for the nodes
                   nodeEnter
@@ -245,6 +309,15 @@
                     .attr("r", 10)
                     .style("fill", function (d) {
                       return d._children ? "lightsteelblue" : "#fff";
+                    })
+                    .style("scale", function (d) {
+                      var factor = d.children
+                        ? d.children.length
+                        : d._children
+                        ? d._children.length
+                        : 0;
+
+                      return factor * 0.15 + 0.5;
                     })
                     .attr("cursor", "pointer");
 
