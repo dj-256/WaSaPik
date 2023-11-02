@@ -38,131 +38,296 @@
     <div id="my_dataviz"></div>
 
     <script>
-      // set the dimensions and margins of the graph
-      var margin = { top: 10, right: 20, bottom: 30, left: 50 },
-        width = 800 - margin.left - margin.right,
-        height = 920 - margin.top - margin.bottom;
-
-      // append the svg object to the body of the page
-      var svg = d3
-        .select("#my_dataviz")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      d3.json("../data/json/song.json").then((data3) => {
-        var albumsIds = [...new Set(data3.map((d) => d.id_album))];
-        d3.json("../data/json/album.json").then((data) => {
-          //transform data to only keep those with a country
-          //format of the json: {albumsIds[i]: {}}
-          var data2 = {};
-          for (var i = 0; i < albumsIds.length; i++) {
-            if (data[albumsIds[i]].country != "") {
-              data2[albumsIds[i]] = data[albumsIds[i]];
-            }
-          }
-          //print unique countries with d3js
-          var countries = [
-            ...new Set(Object.values(data2).map((d) => d.country)),
-          ];
-          console.log(countries);
-
-          d3.json(
-            "https://raw.githubusercontent.com/rapomon/geojson-places/master/data/continents/continents.json",
-          ).then((continents) => {
-            //create a tree with the continents of the countries
-            var tree2 = {
-              name: "World",
-              children: [],
-            };
-            for (var i = 0; i < continents.length; i++) {
-              var continent = continents[i];
-              var continentName = continent.continent_name;
-              var continentCode = continent.continent_code;
-              var continentCountries = continent.countries;
-              var continentChildren = [];
-              for (var j = 0; j < continentCountries.length; j++) {
-                var country = continentCountries[j];
-                if (countries.includes(country)) {
-                  continentChildren.push({
-                    name: country,
-                  });
-                }
+      window.onload = async function () {
+        var tree2 = {
+          name: "World",
+          children: [],
+        };
+        d3.json("../data/json/song.json").then((data3) => {
+          var albumsIds = [...new Set(data3.map((d) => d.id_album))];
+          d3.json("../data/json/album.json").then((data) => {
+            //transform data to only keep those with a country
+            var data2 = {};
+            for (var i = 0; i < albumsIds.length; i++) {
+              if (data[albumsIds[i]].country != "") {
+                data2[albumsIds[i]] = data[albumsIds[i]];
               }
-              tree2.children.push({
-                name: continentName,
-                children: continentChildren,
-              });
             }
-            console.log(tree2);
 
-            //create d3js tree with a root at the center of the page
-            var root2 = d3.hierarchy(tree2);
-            root2.dx = 20;
-            root2.dy = width / (root2.height + 1);
-            d3.tree().nodeSize([root2.dx, root2.dy])(root2);
+            //list of unique countries using d3
+            var countries = [
+              ...new Set(Object.values(data2).map((d) => d.country)),
+            ];
 
-            //create links
-            var links2 = root2.links();
-            //create nodes
-            var nodes2 = root2.descendants();
+            d3.json(
+              "https://raw.githubusercontent.com/rapomon/geojson-places/master/data/continents/continents.json",
+            )
+              .then(async (continents) => {
+                //create a tree with children continent -> country -> artist -> album -> song
+                for (var i = 0; i < continents.length; i++) {
+                  var continent = continents[i];
+                  var continentObj = {
+                    name: continent.continent_name,
+                    children: [],
+                  };
+                  var countryNames = await d3.json(
+                    "../data/json/iso2toname.json",
+                  );
+                  for (var j = 0; j < countries.length; j++) {
+                    var country = countries[j];
+                    if (continent.countries.includes(country)) {
+                      var countryObj = {
+                        name: countryNames[country],
+                        children: [],
+                      };
+                    } else {
+                      continue;
+                    }
 
-            //add tree to svg
-            var g2 = svg
-              .append("g")
-              .attr("font-family", "sans-serif")
-              .attr("font-size", 10)
-              .attr(
-                "transform",
-                "translate(" + root2.dy / 3 + "," + root2.dx * 22 + ")",
-              );
+                    //retrieve the ids of the albums of the country
+                    var treeAlbumsIds = Object.keys(data2).filter(
+                      (d) => data2[d].country == country,
+                    );
 
-            //add links
-            var link2 = g2
-              .append("g")
-              .attr("fill", "none")
-              .attr("stroke", "#555")
-              .attr("stroke-opacity", 0.4)
-              .attr("stroke-width", 1.5)
-              .selectAll("path")
-              .data(links2)
-              .join("path")
-              .attr(
-                "d",
-                d3
-                  .linkHorizontal()
-                  .x((d) => d.y)
-                  .y((d) => d.x),
-              );
-            //add nodes
-            var node2 = g2
-              .append("g")
-              .attr("stroke-linejoin", "round")
-              .attr("stroke-width", 3)
-              .selectAll("g")
-              .data(nodes2)
-              .join("g")
-              .attr("transform", (d) => `translate(${d.y},${d.x})`);
-            //add circles
-            node2
-              .append("circle")
-              .attr("fill", (d) => (d.children ? "#555" : "#999"))
-              .attr("r", 2.5);
-            //add text
-            node2
-              .append("text")
-              .attr("dy", "0.31em")
-              .attr("x", (d) => (d.children ? -6 : 6))
-              .attr("text-anchor", (d) => (d.children ? "end" : "start"))
-              .text((d) => d.data.name)
-              .clone(true)
-              .lower()
-              .attr("stroke", "white");
+                    for (var k = 0; k < treeAlbumsIds.length; k++) {
+                      var albumId = treeAlbumsIds[k];
+                      var albumObj = {
+                        name: data2[albumId].title,
+                        children: [],
+                      };
+                      //retrieve the ids of the songs of the album
+                      var treeSongsIds = Object.keys(data3).filter(
+                        (d) => data3[d].id_album == albumId,
+                      );
+                      for (var l = 0; l < treeSongsIds.length; l++) {
+                        var songId = treeSongsIds[l];
+                        var artistObj = {
+                          name: data3[songId].title,
+                        };
+                        albumObj.children.push(artistObj);
+                        if (albumObj.children.length > 10) {
+                          break;
+                        }
+                      }
+                      countryObj.children.push(albumObj);
+                      if (countryObj.children.length > 10) {
+                        break;
+                      }
+                    }
+                    continentObj.children.push(countryObj);
+                    if (continentObj.children.length > 10) {
+                      break;
+                    }
+                  }
+                  tree2.children.push(continentObj);
+                }
+              })
+              .then(() => {
+                // set the dimensions and margins of the graph
+                var margin = { top: 10, right: 20, bottom: 30, left: 50 },
+                  width = 1500 - margin.left - margin.right,
+                  height = 920 - margin.top - margin.bottom;
+
+                // append the svg object to the body of the page
+                var svg = d3
+                  .select("#my_dataviz")
+                  .append("svg")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                  .attr(
+                    "transform",
+                    "translate(" + margin.left + "," + margin.top + ")",
+                  );
+
+                var i = 0,
+                  duration = 750;
+
+                //create d3js tree with a root at the center of the page
+                var root = d3.hierarchy(tree2, function (d) {
+                  return d.children;
+                });
+                root.dx = 20;
+                root.dy = width / (root.height + 1);
+
+                var treemap = d3.tree().size([height, width]);
+
+                // Collapse after the second level
+                root.children.forEach(collapse);
+
+                update(root);
+
+                // Collapse the node and all it's children
+                function collapse(d) {
+                  if (d.children) {
+                    d._children = d.children;
+                    d._children.forEach(collapse);
+                    d.children = null;
+                  }
+                }
+
+                function update(source) {
+                  // Assigns the x and y position for the nodes
+                  var treeData = treemap(root);
+
+                  // Compute the new tree layout.
+                  var nodes = treeData.descendants(),
+                    links = treeData.descendants().slice(1);
+
+                  // Normalize for fixed-depth.
+                  nodes.forEach(function (d) {
+                    d.y = d.depth * 180;
+                  });
+
+                  // ****************** Nodes section ***************************
+
+                  // Update the nodes...
+                  var node = svg.selectAll("g.node").data(nodes, function (d) {
+                    return d.id || (d.id = ++i);
+                  });
+
+                  // Enter any new modes at the parent's previous position.
+                  var nodeEnter = node
+                    .enter()
+                    .append("g")
+                    .attr("class", "node")
+                    .attr("transform", function (d) {
+                      return "translate(" + source.y0 + "," + source.x0 + ")";
+                    })
+                    .on("click", click);
+
+                  // Add Circle for the nodes
+                  nodeEnter
+                    .append("circle")
+                    .attr("class", "node")
+                    .attr("r", 1e-6)
+                    .style("fill", function (d) {
+                      return d._children ? "lightsteelblue" : "#fff";
+                    });
+
+                  // Add labels for the nodes
+                  nodeEnter
+                    .append("text")
+                    .attr("dy", ".35em")
+                    .attr("x", function (d) {
+                      return d.children || d._children ? -13 : 13;
+                    })
+                    .attr("text-anchor", function (d) {
+                      return d.children || d._children ? "end" : "start";
+                    })
+                    .text(function (d) {
+                      return d.data.name;
+                    });
+
+                  // UPDATE
+                  var nodeUpdate = nodeEnter.merge(node);
+
+                  // Transition to the proper position for the node
+                  nodeUpdate
+                    .transition()
+                    .duration(duration)
+                    .attr("transform", function (d) {
+                      return "translate(" + d.y + "," + d.x + ")";
+                    });
+
+                  // Update the node attributes and style
+                  nodeUpdate
+                    .select("circle.node")
+                    .attr("r", 10)
+                    .style("fill", function (d) {
+                      return d._children ? "lightsteelblue" : "#fff";
+                    })
+                    .attr("cursor", "pointer");
+
+                  // Remove any exiting nodes
+                  var nodeExit = node
+                    .exit()
+                    .transition()
+                    .duration(duration)
+                    .attr("transform", function (d) {
+                      return "translate(" + source.y + "," + source.x + ")";
+                    })
+                    .remove();
+
+                  // On exit reduce the node circles size to 0
+                  nodeExit.select("circle").attr("r", 1e-6);
+
+                  // On exit reduce the opacity of text labels
+                  nodeExit.select("text").style("fill-opacity", 1e-6);
+
+                  // ****************** links section ***************************
+
+                  // Update the links...
+                  var link = svg
+                    .selectAll("path.link")
+                    .data(links, function (d) {
+                      return d.id;
+                    });
+
+                  // Enter any new links at the parent's previous position.
+                  var linkEnter = link
+                    .enter()
+                    .insert("path", "g")
+                    .attr("class", "link")
+                    .attr("d", function (d) {
+                      var o = { x: source.x0, y: source.y0 };
+                      return diagonal(o, o);
+                    });
+
+                  // UPDATE
+                  var linkUpdate = linkEnter.merge(link);
+
+                  // Transition back to the parent element position
+                  linkUpdate
+                    .transition()
+                    .duration(duration)
+                    .attr("d", function (d) {
+                      return diagonal(d, d.parent);
+                    });
+
+                  // Remove any exiting links
+                  var linkExit = link
+                    .exit()
+                    .transition()
+                    .duration(duration)
+                    .attr("d", function (d) {
+                      var o = { x: source.x, y: source.y };
+                      return diagonal(o, o);
+                    })
+                    .remove();
+
+                  // Store the old positions for transition.
+                  nodes.forEach(function (d) {
+                    d.x0 = d.x;
+                    d.y0 = d.y;
+                  });
+
+                  // Creates a curved (diagonal) path from parent to the child nodes
+                  function diagonal(s, d) {
+                    path = `M ${s.y} ${s.x}
+            C ${(s.y + d.y) / 2} ${s.x},
+              ${(s.y + d.y) / 2} ${d.x},
+              ${d.y} ${d.x}`;
+
+                    return path;
+                  }
+
+                  // Toggle children on click.
+                  function click(d) {
+                    if (d.children) {
+                      d._children = d.children;
+                      d.children = null;
+                    } else {
+                      d.children = d._children;
+                      d._children = null;
+                    }
+                    update(d);
+                  }
+                }
+              });
           });
         });
-      });
+      };
     </script>
   </body>
 </html>
