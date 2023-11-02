@@ -124,12 +124,12 @@
               })
               .then(() => {
                 // set the dimensions and margins of the graph
-                var margin = { top: 10, right: 20, bottom: 30, left: 50 },
-                  width = 1500 - margin.left - margin.right,
-                  height = 920 - margin.top - margin.bottom;
+                const margin = { top: 10, right: 20, bottom: 30, left: 50 };
+                const width = 1500 - margin.left - margin.right;
+                let height = 920 - margin.top - margin.bottom;
 
                 // append the svg object to the body of the page
-                var svg = d3
+                const svg = d3
                   .select("#my_dataviz")
                   .append("svg")
                   .attr("width", width + margin.left + margin.right)
@@ -167,11 +167,15 @@
                 }
 
                 function update(source) {
+                  console.log("source:");
+                  console.log(source);
+                  console.log("source.y0:");
+                  console.log(source.y0);
                   // Assigns the x and y position for the nodes
-                  var treeData = treemap(root);
+                  const treeData = treemap(root);
 
                   // Compute the new tree layout.
-                  var nodes = treeData.descendants(),
+                  const nodes = treeData.descendants(),
                     links = treeData.descendants().slice(1);
 
                   // Normalize for fixed-depth.
@@ -182,17 +186,22 @@
                   // ****************** Nodes section ***************************
 
                   // Update the nodes...
-                  var node = svg.selectAll("g.node").data(nodes, function (d) {
-                    return d.id || (d.id = ++i);
-                  });
+                  const node = svg
+                    .selectAll("g.node")
+                    .data(nodes, function (d) {
+                      return d.id || (d.id = ++i);
+                    });
+
+                  console.log("source:");
+                  console.log(source);
 
                   // Enter any new modes at the parent's previous position.
-                  var nodeEnter = node
+                  const nodeEnter = node
                     .enter()
                     .append("g")
                     .attr("class", "node")
                     .attr("transform", function (d) {
-                      return "translate(" + source.y0 + "," + source.x0 + ")";
+                      return "translate(" + source.y + "," + source.x + ")";
                     })
                     .on("click", click);
 
@@ -220,7 +229,7 @@
                     });
 
                   // UPDATE
-                  var nodeUpdate = nodeEnter.merge(node);
+                  const nodeUpdate = nodeEnter.merge(node);
 
                   // Transition to the proper position for the node
                   nodeUpdate
@@ -240,7 +249,7 @@
                     .attr("cursor", "pointer");
 
                   // Remove any exiting nodes
-                  var nodeExit = node
+                  const nodeExit = node
                     .exit()
                     .transition()
                     .duration(duration)
@@ -258,24 +267,24 @@
                   // ****************** links section ***************************
 
                   // Update the links...
-                  var link = svg
+                  const link = svg
                     .selectAll("path.link")
                     .data(links, function (d) {
                       return d.id;
                     });
 
                   // Enter any new links at the parent's previous position.
-                  var linkEnter = link
+                  const linkEnter = link
                     .enter()
                     .insert("path", "g")
                     .attr("class", "link")
                     .attr("d", function (d) {
-                      var o = { x: source.x0, y: source.y0 };
+                      const o = { x: source.x, y: source.y };
                       return diagonal(o, o);
                     });
 
                   // UPDATE
-                  var linkUpdate = linkEnter.merge(link);
+                  const linkUpdate = linkEnter.merge(link);
 
                   // Transition back to the parent element position
                   linkUpdate
@@ -286,12 +295,12 @@
                     });
 
                   // Remove any exiting links
-                  var linkExit = link
+                  const linkExit = link
                     .exit()
                     .transition()
                     .duration(duration)
                     .attr("d", function (d) {
-                      var o = { x: source.x, y: source.y };
+                      const o = { x: source.x, y: source.y };
                       return diagonal(o, o);
                     })
                     .remove();
@@ -314,6 +323,8 @@
 
                   // Toggle children on click.
                   function click(d) {
+                    console.log("d:");
+                    console.log(d);
                     if (d.children) {
                       d._children = d.children;
                       d.children = null;
