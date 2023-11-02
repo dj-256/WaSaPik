@@ -16,7 +16,7 @@ function loadJSON(file) {
   });
 }
 
-const genreType = ["Multiples genres", "Metal", "Pop", "Rock"];
+const genreType = ["Autres styles populaires", "Metal", "Pop", "Rock"];
 const genreID = ["noGenre", "metal", "pop", "rock"];
 let currentGenre = 0;
 
@@ -47,25 +47,37 @@ function createsvg() {
     .append("g")
     .attr("transform",
       "translate(" + margin.left + "," + margin.top + ")");
-  
+
 
   svg.append("text")
-   .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
-   .style("text-anchor", "middle")
-   .text("Année de parution");
+    .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
+    .style("text-anchor", "middle")
+    .text("Année de parution");
 
-// Ajouter un titre à l'axe des ordonnées (Y)
-svg.append("text")
-   .attr("transform", "rotate(-90)")
-   .attr("y", 0 - margin.left)
-   .attr("x",0 - (height / 2))
-   .attr("dy", "1em")
-   .style("text-anchor", "middle")
-   .text("Longueur de la chanson (secondes)");
-   
-   return svg;
+  // Ajouter un titre à l'axe des ordonnées (Y)
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("Longueur de la chanson (secondes)");
+
+  return svg;
 }
 
+//Color scale for the BPM of the song
+function bpm_scale(value) {
+  if (value >= 50 && value < 100) {
+    return "#B8E1FF";
+  } else if (value >= 100 && value < 150) {
+    return "#A9FFF7";
+  } else if (value >= 150 && value < 200) {
+    return "#94FBAB";
+  } else {
+    return "#82ABA1";
+  }
+}
 
 window.onload = async function () {
   var div = d3.select("body").append("div")
@@ -80,14 +92,12 @@ window.onload = async function () {
     let dataFilter = []
     //Find the latest publication date for X axis
     var dates = [];
+    dataFilter = data.filter(d => ((d.length >= 95) && (d.length < 300) && (d.lyrics > 90) && (d.lyrics < 900) && (d.bpm >= 50)));
+    dataFilter = dataFilter.filter(d => { let elem = parseTime(d.publicationDate); return (elem.getFullYear() >= 1990) && (elem.getFullYear() <= 2020) })
 
-    for (let obj of data) {
-      if (obj.publicationDate === "") continue;
+    for (let obj of dataFilter) {
       d = parseTime(obj.publicationDate)
-      if (d.getFullYear() >= 1990 && d.getFullYear() <= 2020) {
-        dates.push(d);
-        dataFilter.push(obj);
-      }
+      dates.push(d);
     }
 
     //Format for time
@@ -102,7 +112,7 @@ window.onload = async function () {
       .attr("transform", "translate(0," + height + ")")
       .call(xAxis);
 
-    // Add Y axis which correspond to the duration of the song
+    //Add Y axis which correspond to the duration of the song
     var y_length = d3.scaleLinear()
       .domain([90, 300])
       .range([height, 0]);
@@ -110,24 +120,19 @@ window.onload = async function () {
     svg.append("g")
       .call(d3.axisLeft(y_length));
 
-    // Add a scale for bubble size depending of lyrics length
+    //Add a scale for bubble size depending of lyrics length
     let lyrics_scale = d3.scaleThreshold()
       .domain([100, 150, 200, 250, 300])
       .range([2.5, 5.0, 7.5, 10.0, 12.5]);
 
-    //Color scale for the BPM of the song
-    //couleur TODO
-    let bpm_scale = d3.scaleLinear([50, 100, 150, 200], ["#B8E1FF", "#A9FFF7", "#94FBAB", "#82ABA1"]).interpolate(d3.interpolateHcl);;
-
-    dataFilter = dataFilter.filter(d => ((d.length >= 95) && (d.length < 300) && (d.lyrics > 90) && (d.lyrics < 900)));
-
-    const popSongs = dataFilter.filter(d => d.genre.includes("Pop"));
-    const rockSongs = dataFilter.filter(d => d.genre.includes("Rock"));
+    //Define the main categories
+    const popSongs = dataFilter.filter(d => d.genre === ("Pop"));
+    const rockSongs = dataFilter.filter(d => (d.genre === "Rock"));
     const metalSongs = dataFilter.filter(d => d.genre.includes("Metal"));
-    const elseSongs = dataFilter.filter(d => (d.genre.includes("Soul") || d.genre.includes("Emo") || d.genre.includes("Gothic") 
-    || d.genre.includes("Jazz") || d.genre.includes("Electro") || d.genre.includes("Blues") || d.genre.includes("Lo-Fi") || d.genre.includes("Disco") || d.genre.includes("Celtic")));
+    const elseSongs = dataFilter.filter(d => (d.genre.includes("Soul") || d.genre.includes("Gothic")
+      || d.genre.includes("Jazz") || d.genre.includes("Blues")));
 
-    //Songs without genre
+    //Multiple genre songs
     svg.append('g')
       //id on the container to be able to toggle display
       .attr("id", "noGenre")
@@ -346,4 +351,3 @@ function updateChart() {
   hiddenNodes.style("display", "none");
   displayedNodes.style("display", "initial");
 }
-
