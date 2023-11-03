@@ -28,7 +28,7 @@
   </header>
   <div id="filters">
     <select id="genre-filter" name="genre" onchange="filterData();">
-      <option selected="selected">Autres styles populaires</option>
+      <option selected="selected">Jazz & Blues</option>
       <option>Metal</option>
       <option>Pop</option>
       <option>Rock</option>
@@ -36,10 +36,10 @@
         <div style="display: inline-block;">
           <span>Longeur des lyrics min</span>
           <input id="minInput" type="number" id="lyricsRange" min="90" max="890" step="10" value="90"
-            onchange="updateChart();">
+            onchange="updateValues();">
           <span>Longeur des lyrics max</span>
           <input id="maxInput" type="number" id="lyricsRange" min="100" max="900" step="10" value="900"
-            onchange="updateChart();">
+            onchange="updateValues();">
         </div>
         </div>
 
@@ -70,7 +70,8 @@
           <td style="background-color: #82ABA1;"></td>
         </tr>
       </table>
-      <div style="display: inline-block;">Genre musical détermine la forme<br>Longueur des lyrics détermine la taille</div>
+      <div style="display: inline-block;" id="jazzBluesDescription">Circle = Jazz <br>Square = Blues</div>
+      <div style="display: inline-block;">Longueur des lyrics détermine la taille</div>
 
     </div>
 

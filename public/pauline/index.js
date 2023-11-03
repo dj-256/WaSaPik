@@ -16,8 +16,8 @@ function loadJSON(file) {
   });
 }
 
-const genreType = ["Autres styles populaires", "Metal", "Pop", "Rock"];
-const genreID = ["noGenre", "metal", "pop", "rock"];
+const genreType = ["Jazz & Blues", "Metal", "Pop", "Rock"];
+const genreID = ["jazzBlues", "metal", "pop", "rock"];
 let currentGenre = 0;
 
 //Display the selected genre
@@ -25,17 +25,22 @@ function filterData() {
   let select = document.getElementsByName("genre")[0];
   let choice = select.selectedIndex;
   let value = select.options[choice].value;
+  //Find the chosen genre to
   for (let i = 0; i < genreType.length; i++) {
     let element = document.getElementById(genreID[i])
     if (value === genreType[i]) {
       element.style.display = "initial";
       currentGenre = i;
+      if(i == 0)
+        document.getElementById("jazzBluesDescription").style.display = "inline-block";
+      else
+        document.getElementById("jazzBluesDescription").style.display = "none";
     }
     else {
       element.style.display = "none";
     }
   }
-  updateChart();
+  updateValues();
 }
 
 //Append svg to the body of the page
@@ -90,11 +95,12 @@ window.onload = async function () {
     const parseTime = d3.timeParse("%Y-%m-%d");
 
     let dataFilter = []
-    //Find the latest publication date for X axis
-    var dates = [];
-    dataFilter = data.filter(d => ((d.length >= 95) && (d.length < 300) && (d.lyrics > 90) && (d.lyrics < 900) && (d.bpm >= 50)));
+
+    dataFilter = data.filter(d => ((d.length >= 95) && (d.length < 300) && (d.lyrics > 90) && (d.bpm >= 50)));
     dataFilter = dataFilter.filter(d => { let elem = parseTime(d.publicationDate); return (elem.getFullYear() >= 1990) && (elem.getFullYear() <= 2020) })
 
+    //Find the latest publication date for X axis
+    let dates = [];
     for (let obj of dataFilter) {
       d = parseTime(obj.publicationDate)
       dates.push(d);
@@ -102,7 +108,7 @@ window.onload = async function () {
 
     //Format for time
     const parseYear = d3.timeParse("%Y");
-    var domain = d3.extent(dates);
+    let domain = d3.extent(dates);
     let dateScale = d3.scaleTime()
       .domain(domain)
       .range([1, width]);
@@ -113,7 +119,7 @@ window.onload = async function () {
       .call(xAxis);
 
     //Add Y axis which correspond to the duration of the song
-    var y_length = d3.scaleLinear()
+    let y_length = d3.scaleLinear()
       .domain([90, 300])
       .range([height, 0]);
 
@@ -122,22 +128,21 @@ window.onload = async function () {
 
     //Add a scale for bubble size depending of lyrics length
     let lyrics_scale = d3.scaleThreshold()
-      .domain([100, 150, 200, 250, 300])
-      .range([2.5, 5.0, 7.5, 10.0, 12.5]);
+      .domain([100, 200, 300, 400, 450])
+      .range([5, 8, 10, 14.0, 20]);
 
     //Define the main categories
-    const popSongs = dataFilter.filter(d => d.genre === ("Pop"));
+    const popSongs = dataFilter.filter(d => d.genre === ("Pop") );
     const rockSongs = dataFilter.filter(d => (d.genre === "Rock"));
     const metalSongs = dataFilter.filter(d => d.genre.includes("Metal"));
-    const elseSongs = dataFilter.filter(d => (d.genre.includes("Soul") || d.genre.includes("Gothic")
-      || d.genre.includes("Jazz") || d.genre.includes("Blues")));
+    const jazzSongs = dataFilter.filter(d => (d.genre.includes("Jazz")));
+    const bluesSongs = dataFilter.filter(d => (d.genre.includes("Blues")));
 
-    //Multiple genre songs
+    //Jazz songs
     svg.append('g')
-      //id on the container to be able to toggle display
-      .attr("id", "noGenre")
+      .attr("id", "jazzBlues")
       .selectAll("dot")
-      .data(elseSongs)
+      .data(jazzSongs)
       .enter()
       .append("circle")
       .attr("cx", function (d) { return dateScale(parseTime(d.publicationDate)); })
@@ -167,17 +172,50 @@ window.onload = async function () {
           .style("opacity", 0);
       });
 
-    //Pop songs
-    svg.append('g')
-      .attr("id", "pop")
-      .selectAll("rect")
-      .data(popSongs)
+      //Add Blues songs to the same graph as the Jazz
+      let gJazz_Blues = d3.select("g#jazzBlues");
+      gJazz_Blues.selectAll("rect")
+      .data(bluesSongs)
       .enter()
       .append("rect")
       .attr("x", function (d) { return dateScale(parseTime(d.publicationDate)); })
       .attr("y", function (d) { return y_length(d.length); })
-      .attr("width", function (d) { return lyrics_scale(d.lyrics); })
-      .attr("height", function (d) { return lyrics_scale(d.lyrics); })
+      .attr("width", function (d) { return lyrics_scale(d.lyrics) *2; })
+      .attr("height", function (d) { return lyrics_scale(d.lyrics) *2; })
+      .style("fill", d => bpm_scale(d.bpm))
+      .attr("lyrics", function (d) { return d.lyrics })
+      .style("opacity", "0.7")
+      .attr("stroke", "black")
+      .on('mouseover', function (d, i) {
+        d3.select(this).transition()
+          .duration('50')
+          .attr('opacity', '.85');
+        div.transition()
+          .duration(50)
+          .style("opacity", 1)
+        let divContent = "Titre : " + d.title + " - Auteur : " + d.name;
+        div.html(divContent)
+          .style("left", (d3.event.pageX + 10) + "px")
+          .style("top", (d3.event.pageY - 15) + "px");
+      }).on('mouseout', function (d, i) {
+        d3.select(this).transition()
+          .duration('50')
+          .attr('opacity', '1');
+        div.transition()
+          .duration('50')
+          .style("opacity", 0);
+        });
+
+    //Pop songs
+    svg.append('g')
+      .attr("id", "pop")
+      .selectAll("dot")
+      .data(popSongs)
+      .enter()
+      .append("circle")
+      .attr("cx", function (d) { return dateScale(parseTime(d.publicationDate)); })
+      .attr("cy", function (d) { return y_length(d.length); })
+      .attr("r", function (d) { return lyrics_scale(d.lyrics); })
       .style("fill", d => bpm_scale(d.bpm))
       .attr("lyrics", function (d) { return d.lyrics })
       .style("opacity", "0.7")
@@ -205,17 +243,13 @@ window.onload = async function () {
     //Rock songs
     svg.append('g')
       .attr("id", "rock")
-      .selectAll("path")
+      .selectAll("dot")
       .data(rockSongs)
       .enter()
-      .append("path")
-      .attr("d", d3.symbol().type(d3.symbolStar))
-      .attr("transform", function (d) {
-        return "translate(" + dateScale(parseTime(d.publicationDate)) + "," + y_length(d.length) + ")";
-      })
-      .attr("r", function (d) {
-        return lyrics_scale(d.lyrics);
-      })
+      .append("circle")
+      .attr("cx", function (d) { return dateScale(parseTime(d.publicationDate)); })
+      .attr("cy", function (d) { return y_length(d.length); })
+      .attr("r", function (d) { return lyrics_scale(d.lyrics); })
       .style("fill", function (d) {
         return bpm_scale(d.bpm);
       })
@@ -246,17 +280,13 @@ window.onload = async function () {
     //Metal songs
     svg.append('g')
       .attr("id", "metal")
-      .selectAll("path")
+      .selectAll("dot")
       .data(metalSongs)
       .enter()
-      .append("path")
-      .attr("d", d3.symbol().type(d3.symbolTriangle))
-      .attr("transform", function (d) {
-        return "translate(" + dateScale(parseTime(d.publicationDate)) + "," + y_length(d.length) + ")";
-      })
-      .attr("r", function (d) {
-        return lyrics_scale(d.lyrics);
-      })
+      .append("circle")
+      .attr("cx", function (d) { return dateScale(parseTime(d.publicationDate)); })
+      .attr("cy", function (d) { return y_length(d.length); })
+      .attr("r", function (d) { return lyrics_scale(d.lyrics); })
       .style("fill", function (d) {
         return bpm_scale(d.bpm);
       })
@@ -285,7 +315,7 @@ window.onload = async function () {
       });
   })
 
-  updateChart();
+  updateValues();
 }
 
 function getMinMaxValue() {
@@ -301,53 +331,29 @@ function getMinMaxValue() {
 }
 
 
-function updateChart() {
+function updateValues() {
   let value = getMinMaxValue();
   let minValue = value[0];
   let maxValue = value[1];
 
-  let type;
-  switch (currentGenre) {
-    case 0:
-      type = "circle";
-      break;
-    case 1:
-      type = "path";
-      break;
-    case 2:
-      type = "rect"
-      break;
-    case 3:
-      type = "path";
-      break;
-    default:
-      break;
-  }
-
-  let nodes = d3.selectAll(type);
+  let nodes;
   let displayedNodes;
   let hiddenNodes;
 
-  if (type == "path") {
-    displayedNodes = nodes.filter(function () {
-      return ((parseInt(d3.select(this).attr("lyrics")) >= minValue) && (d3.select(this).attr("class") === genreID[currentGenre] || d3.select(this).attr("class") === "domain") && (parseInt(d3.select(this).attr("lyrics")) <= maxValue));
-    });
-
-    hiddenNodes = nodes.filter(function () {
-      return !((parseInt(d3.select(this).attr("lyrics")) >= minValue) && (d3.select(this).attr("class") === genreID[currentGenre]) && (parseInt(d3.select(this).attr("lyrics")) <= maxValue)) && !(d3.select(this).attr("class") === "domain");
-    })
-  }
-
+  if (currentGenre == 0) 
+    nodes = d3.selectAll("circle, rect")
+    
   else {
-    displayedNodes = nodes.filter(function () {
+    nodes = d3.selectAll("circle")
+    
+  }
+  displayedNodes = nodes.filter(function () {
       return ((parseInt(d3.select(this).attr("lyrics")) >= minValue) && (parseInt(d3.select(this).attr("lyrics")) <= maxValue));
     });
 
     hiddenNodes = nodes.filter(function () {
       return !((parseInt(d3.select(this).attr("lyrics")) >= minValue) && (parseInt(d3.select(this).attr("lyrics")) <= maxValue));
     })
-  }
-
   hiddenNodes.style("display", "none");
   displayedNodes.style("display", "initial");
 }
