@@ -4,7 +4,6 @@ import songsByStreamingService from "./songsByStreamingService.js";
 import intersections from "./intersections.js";
 
 export const drawBubbles = () => {
-  // #BCB6FF #B8E1FF #A9FFF7 #94FBAB #82ABA1
   const colors = [
     "#005f73",
     "#0a9396",
@@ -18,10 +17,6 @@ export const drawBubbles = () => {
 
   let containerWidth = 600;
   let containerHeight = 600;
-  let marginTop = 50;
-  let marginBottom = 50;
-  let marginLeft = 50;
-  let marginRight = 50;
 
   const container = d3
     .select("#container")
