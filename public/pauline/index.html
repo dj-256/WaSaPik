@@ -27,28 +27,30 @@
     </nav>
   </header>
   <div id="filters">
-  <select id="genre-filter" name="genre" onchange="filterData();">
-    <option selected="selected">Multiples genres</option>
-    <option>Metal</option>
-    <option>Pop</option>
-    <option>Rock</option>
-    <select>
-      <div style="display: inline-block;">
-        <span>Longeur des lyrics min</span>
-        <input id="minInput" type="number" id="lyricsRange" min="90" max="890" step="10" value="90"
-          onchange="updateChart();">
-        <span>Longeur des lyrics max</span>
-        <input id="maxInput" type="number" id="lyricsRange" min="100" max="900" step="10" value="900"
-          onchange="updateChart();">
-      </div>
-</div>
-<div id="graph" style="display: flex; align-items: center;">
-      <!-- Affiche les albums avec la durée moyenne d'un album en fonction du temps puis si on clique dessus ses chansons sur le mm graphique-->
-      <div id="my_dataviz" style="display: inline-block;"></div>
-      <table>
+    <select id="genre-filter" name="genre" onchange="filterData();">
+      <option selected="selected">Jazz & Blues</option>
+      <option>Metal</option>
+      <option>Pop</option>
+      <option>Rock</option>
+      <select>
+        <div style="display: inline-block;">
+          <span>Longeur des lyrics min</span>
+          <input id="minInput" type="number" id="lyricsRange" min="90" max="890" step="10" value="90"
+            onchange="updateValues();">
+          <span>Longeur des lyrics max</span>
+          <input id="maxInput" type="number" id="lyricsRange" min="100" max="900" step="10" value="900"
+            onchange="updateValues();">
+        </div>
+        </div>
+
+  </div>
+  <div id="graph" style="display: flex; align-items: center;">
+    <!-- Affiche les albums avec la durée moyenne d'un album en fonction du temps puis si on clique dessus ses chansons sur le mm graphique-->
+    <div id="my_dataviz" style="display: inline-block;"></div>
+    <div id="side-descrption" style="display: flex; flex-direction: column-reverse;">
+      <table style="display: inline-block; width: fit-content;">
         <tr>
           <th>BPM</th>
-
           <th>Couleur</th>
         </tr>
         <tr>
@@ -67,11 +69,14 @@
           <td>200+</td>
           <td style="background-color: #82ABA1;"></td>
         </tr>
-        <tr>
-          <td>Non spécifié</td>
-          <td style="background-color: rgb(205, 195, 221);"></td>
-        </tr>
       </table>
-</div>
+      <div style="display: inline-block;" id="jazzBluesDescription">Circle = Jazz <br>Square = Blues</div>
+      <div style="display: inline-block;">Longueur des lyrics détermine la taille</div>
+
+    </div>
+
+
+  </div>
 </body>
+
 </html>
