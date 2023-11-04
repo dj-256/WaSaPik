@@ -21,28 +21,78 @@
         font-family: "Helvetica Neue", sans-serif;
       }
 
-      .filterButton {
+      #main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2em;
+      }
+
+      .filter-button {
+        background: none;
+        border: #06b12b solid 2px;
+        color: #06b12b;
+        font-size: 0.8rem;
         transition:
           background-color 0.2s ease-in-out,
           color 0.2s ease-in-out;
       }
 
-      .filterButton.active {
+      .filter-button.active {
+        background-color: #06b12b;
+        color: white;
+      }
+
+      .viz-select {
+        display: flex;
+        gap: 0.2em;
+        margin-bottom: 1rem;
+      }
+
+      .viz-option {
+        color: #4433ff;
+        padding: 0.5rem;
+        cursor: pointer;
+        border: #4433ff solid 2px;
+        width: 6em;
+        text-align: center;
+        transition:
+          background-color 0.2s ease-in-out,
+          color 0.2s ease-in-out;
+      }
+
+      .viz-option.selected {
         background-color: #4433ff;
         color: white;
       }
 
-      .filterButton {
-        background: none;
-        border: #4433ff solid 2px;
-        color: #4433ff;
+      .viz-option:first-child {
+        border-top-left-radius: 3rem;
+        border-bottom-left-radius: 3rem;
+        padding-left: 1rem;
+      }
+
+      .viz-option:last-child {
+        border-top-right-radius: 3rem;
+        border-bottom-right-radius: 3rem;
+        padding-right: 1rem;
       }
     </style>
     <title>Services de streaming</title>
   </head>
   <body>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/venn.js/0.2.20/venn.js"
+      integrity="sha512-l7JSGKZr9DRpTUeL9/RrqmE96NpcMtWsXcTMnIZsobilI1pYnJkdm8Z+pJ6OOvuI2jYpTx6XMYT3oaC6z/sVDA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script src="script.js" type="module"></script>
     <div id="main">
+      <div class="viz-select">
+        <!--    <div class="viz-option">Bar chart</div>-->
+        <!--    <div class="viz-option">Bubbles</div>-->
+      </div>
       <svg id="container">
         <!-- colors: #BCB6FF #B8E1FF #A9FFF7 #94FBAB #82ABA1 -->
         <defs>
