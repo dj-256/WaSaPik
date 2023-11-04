@@ -1,50 +1,59 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
+  <head>
+    <meta charset="UTF-8" />
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
     <script src="./script.js"></script>
 
-  <link href="./styles.css" rel="stylesheet" />
-</head>
+    <link href="./styles.css" rel="stylesheet" />
+  </head>
 
-<body>
+  <body>
     <main>
-        <article class="panel">
-            <svg id="world-map" width="900" height="900"></svg>  
-        </article>
+      <article class="panel">
+        <svg id="world-map" width="900" height="900"></svg>
+      </article>
 
-        <aside class="panel">
-            <h1 id="country-name">Click on a country to display data</h1>
+      <aside>
+        <div class="panel">
+          <h1>Filter</h1>
+          <label for="cars">Filter map by:</label>
+          <select name="filter" id="filter">
+            <option value="bpm">BPM</option>
+            <option value="word-count">Word count</option>
+          </select>
+        </div>
+        <div class="panel" style="margin-top: 10px">
+          <h1 id="country-name">Click on a country to display data</h1>
+          <table>
+            <tr>
+              <td class="stat-name">Average bpm :</td>
+              <td id="bpm"># bpm</td>
+            </tr>
+            <tr>
+              <td class="stat-name">Average word count :</td>
+              <td id="lyrics"># words</td>
+            </tr>
+          </table>
+
+          <div>
             <table>
-                <tr>
-                    <td class="stat-name">Average bpm :</td>
-                    <td id="bpm"># bpm</td>
-                </tr>
-                <tr>
-                    <td class="stat-name">Average word count : </td>
-                    <td id="lyrics"># words</td>
-                </tr>
+              <h2>Genre repartition</h2>
+              <tr>
+                <td class="stat-name">Total data :</td>
+                <td id="genre-data"># genres</td>
+              </tr>
+              <tr>
+                <td class="stat-name">Number of different genres :</td>
+                <td id="genres-count"># genres</td>
+              </tr>
             </table>
-
-            <div>
-                <table>
-                    <h2>Genre repartition</h2>
-                    <tr>
-                        <td class="stat-name">Total data : </td>
-                        <td id="genre-data"># genres</td>
-                    </tr>
-                    <tr>
-                        <td class="stat-name">Number of different genres : </td>
-                        <td id="genres-count"># genres</td>
-                    </tr>
-                </table>
-                <svg id="country-char" width="500" height="400"></svg> 
-            </div>
-        </aside>
-
+            <svg id="country-char" width="500" height="300"></svg>
+          </div>
+        </div>
+      </aside>
     </main>
-</body> 
+  </body>
 </html>
