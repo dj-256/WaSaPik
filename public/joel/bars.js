@@ -42,9 +42,9 @@ export const drawBars = () => {
       return `M ${x} ${y}
             h ${width - radius}
             a ${radius} ${radius} 0 0 1 ${radius} ${radius}
-            v ${height - radius}
+            v ${height - radius - 0.5}
             h ${-width}
-            v ${-height + radius}
+            v ${-height + radius + 0.5}
             a ${radius} ${radius} 0 0 1 ${radius} ${-radius}`;
     };
 
@@ -56,9 +56,9 @@ export const drawBars = () => {
       return `M ${x} ${containerHeight - marginBottom - 10}
             h ${width - radius}
             a ${radius} ${radius} 0 0 1 ${radius} ${radius}
-            v ${10 - radius}
+            v ${10 - radius - 0.5}
             h ${-width}
-            v ${-10 + radius}
+            v ${-10 + radius + 0.5}
             a ${radius} ${radius} 0 0 1 ${radius} ${-radius}`;
     };
 

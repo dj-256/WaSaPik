@@ -16,8 +16,8 @@ export const drawBubbles = () => {
     "#001219",
   ];
 
-  let containerWidth = 1000;
-  let containerHeight = 800;
+  let containerWidth = 600;
+  let containerHeight = 600;
   let marginTop = 50;
   let marginBottom = 50;
   let marginLeft = 50;
