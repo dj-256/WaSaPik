@@ -78,10 +78,7 @@
         padding-right: 1rem;
       }
 
-      .venn-tooltip {
-        display: flex;
-        gap: 0.2rem;
-        flex-direction: column;
+      .tooltip {
         position: absolute;
         background-color: white;
         padding: 0.5rem;
@@ -92,7 +89,13 @@
         transform: translate(10px, -50%);
       }
 
-      .venn-tooltip .sets {
+      .tooltip.venn {
+        display: flex;
+        gap: 0.2rem;
+        flex-direction: column;
+      }
+
+      .tooltip.venn .sets {
         font-size: smaller;
         color: #4b4b57;
       }

@@ -37,7 +37,7 @@ export const drawBubbles = () => {
   );
 
   // add a tooltip
-  const tooltip = d3.select("body").append("div").attr("class", "venn-tooltip");
+  const tooltip = d3.select("body").append("div").attr("class", "venn tooltip");
 
   tooltip.append("div").attr("class", "sets");
   tooltip.append("div").attr("class", "songs");
