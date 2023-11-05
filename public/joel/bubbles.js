@@ -36,6 +36,12 @@ export const drawBubbles = () => {
       .filter((d) => d !== "Hype Machine"),
   );
 
+  // add a tooltip
+  const tooltip = d3.select("body").append("div").attr("class", "venn-tooltip");
+
+  tooltip.append("div").attr("class", "sets");
+  tooltip.append("div").attr("class", "songs");
+
   const draw = () => {
     const data = baseData.filter((d) => d.sets.every((s) => filter.has(s)));
     const buildVenn = venn
@@ -77,7 +83,45 @@ export const drawBubbles = () => {
               "filter-button" + (filter.has(d.name) ? " active" : " inactive"),
           ),
       );
+
+    // add listeners to all the groups to display tooltip on mouseenter
+    container
+      .selectAll("g")
+      .on("mouseenter", function (event, d) {
+        // sort all the areas relative to the current item
+        venn.sortAreas(container, d);
+
+        // Display a tooltip with the current size
+        tooltip.transition().duration(400).style("opacity", 0.9);
+        tooltip.select(".sets").text(d.sets.join(", "));
+        tooltip.select(".songs").text(d.size + " songs");
+
+        // highlight the current path
+        const selection = d3.select(this).transition("tooltip").duration(400);
+        selection
+          .select("path")
+          .style("stroke-width", 3)
+          .style("fill-opacity", d.sets.length == 1 ? 0.4 : 0.1)
+          .style("stroke-opacity", 1);
+      })
+
+      .on("mousemove", function () {
+        tooltip
+          .style("left", event.pageX + "px")
+          .style("top", event.pageY - 28 + "px");
+      })
+
+      .on("mouseleave", function (event, d) {
+        tooltip.transition().duration(400).style("opacity", 0);
+        const selection = d3.select(this).transition("tooltip").duration(400);
+        selection
+          .select("path")
+          .style("stroke-width", 0)
+          .style("fill-opacity", d.sets.length == 1 ? 0.25 : 0.0)
+          .style("stroke-opacity", 0);
+      });
   };
+
   d3.select("#main")
     .append("div")
     .attr("class", "filter-buttons")
