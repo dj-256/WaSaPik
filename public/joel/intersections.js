@@ -1,406 +1,176 @@
 export default [
-  { sets: ["Deezer", "Amazon"], size: 11784 },
-  {
-    sets: ["Hype Machine", "Amazon"],
-    size: 141,
-  },
-  { sets: ["iTunes", "Amazon"], size: 12533 },
-  {
-    sets: ["Pandora", "Amazon"],
-    size: 141,
-  },
   { sets: ["Spotify", "Amazon"], size: 10168 },
+  {
+    sets: ["iTunes", "Amazon"],
+    size: 12533,
+  },
+  { sets: ["Pandora", "Amazon"], size: 141 },
   {
     sets: ["YouTube", "Amazon"],
     size: 2624,
   },
-  { sets: ["Hype Machine", "Deezer"], size: 129 },
+  { sets: ["Deezer", "Amazon"], size: 11784 },
   {
-    sets: ["iTunes", "Deezer"],
-    size: 33272,
+    sets: ["iTunes", "Spotify"],
+    size: 29346,
   },
-  { sets: ["Pandora", "Deezer"], size: 129 },
+  { sets: ["Pandora", "Spotify"], size: 170 },
   {
-    sets: ["Spotify", "Deezer"],
-    size: 37346,
+    sets: ["YouTube", "Spotify"],
+    size: 3349,
   },
-  { sets: ["YouTube", "Deezer"], size: 5105 },
-  {
-    sets: ["iTunes", "Hype Machine"],
-    size: 161,
-  },
-  { sets: ["Pandora", "Hype Machine"], size: 390 },
-  {
-    sets: ["Spotify", "Hype Machine"],
-    size: 170,
-  },
-  { sets: ["YouTube", "Hype Machine"], size: 101 },
+  { sets: ["Deezer", "Spotify"], size: 37346 },
   {
     sets: ["Pandora", "iTunes"],
     size: 161,
   },
-  { sets: ["Spotify", "iTunes"], size: 29346 },
+  { sets: ["YouTube", "iTunes"], size: 3733 },
   {
-    sets: ["YouTube", "iTunes"],
-    size: 3733,
+    sets: ["Deezer", "iTunes"],
+    size: 33272,
   },
-  { sets: ["Spotify", "Pandora"], size: 170 },
+  { sets: ["YouTube", "Pandora"], size: 101 },
   {
-    sets: ["YouTube", "Pandora"],
-    size: 101,
+    sets: ["Deezer", "Pandora"],
+    size: 129,
   },
-  { sets: ["YouTube", "Spotify"], size: 3349 },
+  { sets: ["Deezer", "YouTube"], size: 5105 },
   {
-    sets: ["Hype Machine", "Deezer", "Amazon"],
-    size: 46,
-  },
-  { sets: ["iTunes", "Deezer", "Amazon"], size: 11208 },
-  {
-    sets: ["Pandora", "Deezer", "Amazon"],
-    size: 46,
-  },
-  { sets: ["Spotify", "Deezer", "Amazon"], size: 9647 },
-  {
-    sets: ["YouTube", "Deezer", "Amazon"],
-    size: 2421,
-  },
-  { sets: ["iTunes", "Hype Machine", "Amazon"], size: 69 },
-  {
-    sets: ["Pandora", "Hype Machine", "Amazon"],
-    size: 141,
-  },
-  { sets: ["Spotify", "Hype Machine", "Amazon"], size: 89 },
-  {
-    sets: ["YouTube", "Hype Machine", "Amazon"],
-    size: 62,
-  },
-  { sets: ["Pandora", "iTunes", "Amazon"], size: 69 },
-  {
-    sets: ["Spotify", "iTunes", "Amazon"],
+    sets: ["iTunes", "Spotify", "Amazon"],
     size: 9707,
   },
-  { sets: ["YouTube", "iTunes", "Amazon"], size: 2486 },
-  {
-    sets: ["Spotify", "Pandora", "Amazon"],
-    size: 89,
-  },
-  { sets: ["YouTube", "Pandora", "Amazon"], size: 62 },
+  { sets: ["Pandora", "Spotify", "Amazon"], size: 89 },
   {
     sets: ["YouTube", "Spotify", "Amazon"],
     size: 1955,
   },
-  { sets: ["iTunes", "Hype Machine", "Deezer"], size: 88 },
+  { sets: ["Deezer", "Spotify", "Amazon"], size: 9647 },
   {
-    sets: ["Pandora", "Hype Machine", "Deezer"],
-    size: 129,
+    sets: ["Pandora", "iTunes", "Amazon"],
+    size: 69,
   },
-  { sets: ["Spotify", "Hype Machine", "Deezer"], size: 92 },
+  { sets: ["YouTube", "iTunes", "Amazon"], size: 2486 },
   {
-    sets: ["YouTube", "Hype Machine", "Deezer"],
-    size: 41,
+    sets: ["Deezer", "iTunes", "Amazon"],
+    size: 11208,
   },
-  { sets: ["Pandora", "iTunes", "Deezer"], size: 88 },
+  { sets: ["YouTube", "Pandora", "Amazon"], size: 62 },
   {
-    sets: ["Spotify", "iTunes", "Deezer"],
-    size: 27963,
+    sets: ["Deezer", "Pandora", "Amazon"],
+    size: 46,
   },
-  { sets: ["YouTube", "iTunes", "Deezer"], size: 3450 },
+  { sets: ["Deezer", "YouTube", "Amazon"], size: 2421 },
   {
-    sets: ["Spotify", "Pandora", "Deezer"],
-    size: 92,
-  },
-  { sets: ["YouTube", "Pandora", "Deezer"], size: 41 },
-  {
-    sets: ["YouTube", "Spotify", "Deezer"],
-    size: 3261,
-  },
-  { sets: ["Pandora", "iTunes", "Hype Machine"], size: 161 },
-  {
-    sets: ["Spotify", "iTunes", "Hype Machine"],
+    sets: ["Pandora", "iTunes", "Spotify"],
     size: 88,
   },
-  { sets: ["YouTube", "iTunes", "Hype Machine"], size: 54 },
+  { sets: ["YouTube", "iTunes", "Spotify"], size: 2778 },
   {
-    sets: ["Spotify", "Pandora", "Hype Machine"],
-    size: 170,
+    sets: ["Deezer", "iTunes", "Spotify"],
+    size: 27963,
   },
-  { sets: ["YouTube", "Pandora", "Hype Machine"], size: 101 },
+  { sets: ["YouTube", "Pandora", "Spotify"], size: 44 },
   {
-    sets: ["YouTube", "Spotify", "Hype Machine"],
-    size: 44,
+    sets: ["Deezer", "Pandora", "Spotify"],
+    size: 92,
   },
-  { sets: ["Spotify", "Pandora", "iTunes"], size: 88 },
+  { sets: ["Deezer", "YouTube", "Spotify"], size: 3261 },
   {
     sets: ["YouTube", "Pandora", "iTunes"],
     size: 54,
   },
-  { sets: ["YouTube", "Spotify", "iTunes"], size: 2778 },
+  { sets: ["Deezer", "Pandora", "iTunes"], size: 88 },
   {
-    sets: ["YouTube", "Spotify", "Pandora"],
-    size: 44,
+    sets: ["Deezer", "YouTube", "iTunes"],
+    size: 3450,
+  },
+  { sets: ["Deezer", "YouTube", "Pandora"], size: 41 },
+  {
+    sets: ["Pandora", "iTunes", "Spotify", "Amazon"],
+    size: 31,
   },
   {
-    sets: ["iTunes", "Hype Machine", "Deezer", "Amazon"],
-    size: 33,
+    sets: ["YouTube", "iTunes", "Spotify", "Amazon"],
+    size: 1884,
   },
   {
-    sets: ["Pandora", "Hype Machine", "Deezer", "Amazon"],
-    size: 46,
-  },
-  {
-    sets: ["Spotify", "Hype Machine", "Deezer", "Amazon"],
-    size: 33,
-  },
-  {
-    sets: ["YouTube", "Hype Machine", "Deezer", "Amazon"],
-    size: 23,
-  },
-  {
-    sets: ["Pandora", "iTunes", "Deezer", "Amazon"],
-    size: 33,
-  },
-  {
-    sets: ["Spotify", "iTunes", "Deezer", "Amazon"],
+    sets: ["Deezer", "iTunes", "Spotify", "Amazon"],
     size: 9268,
   },
   {
-    sets: ["YouTube", "iTunes", "Deezer", "Amazon"],
-    size: 2323,
-  },
-  {
-    sets: ["Spotify", "Pandora", "Deezer", "Amazon"],
-    size: 33,
-  },
-  {
-    sets: ["YouTube", "Pandora", "Deezer", "Amazon"],
-    size: 23,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Deezer", "Amazon"],
-    size: 1905,
-  },
-  {
-    sets: ["Pandora", "iTunes", "Hype Machine", "Amazon"],
-    size: 69,
-  },
-  {
-    sets: ["Spotify", "iTunes", "Hype Machine", "Amazon"],
-    size: 31,
-  },
-  {
-    sets: ["YouTube", "iTunes", "Hype Machine", "Amazon"],
-    size: 44,
-  },
-  {
-    sets: ["Spotify", "Pandora", "Hype Machine", "Amazon"],
-    size: 89,
-  },
-  {
-    sets: ["YouTube", "Pandora", "Hype Machine", "Amazon"],
-    size: 62,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Hype Machine", "Amazon"],
+    sets: ["YouTube", "Pandora", "Spotify", "Amazon"],
     size: 29,
   },
   {
-    sets: ["Spotify", "Pandora", "iTunes", "Amazon"],
-    size: 31,
+    sets: ["Deezer", "Pandora", "Spotify", "Amazon"],
+    size: 33,
+  },
+  {
+    sets: ["Deezer", "YouTube", "Spotify", "Amazon"],
+    size: 1905,
   },
   {
     sets: ["YouTube", "Pandora", "iTunes", "Amazon"],
     size: 44,
   },
   {
-    sets: ["YouTube", "Spotify", "iTunes", "Amazon"],
-    size: 1884,
+    sets: ["Deezer", "Pandora", "iTunes", "Amazon"],
+    size: 33,
   },
   {
-    sets: ["YouTube", "Spotify", "Pandora", "Amazon"],
-    size: 29,
+    sets: ["Deezer", "YouTube", "iTunes", "Amazon"],
+    size: 2323,
   },
   {
-    sets: ["Pandora", "iTunes", "Hype Machine", "Deezer"],
-    size: 88,
-  },
-  {
-    sets: ["Spotify", "iTunes", "Hype Machine", "Deezer"],
-    size: 67,
-  },
-  {
-    sets: ["YouTube", "iTunes", "Hype Machine", "Deezer"],
+    sets: ["Deezer", "YouTube", "Pandora", "Amazon"],
     size: 23,
   },
   {
-    sets: ["Spotify", "Pandora", "Hype Machine", "Deezer"],
-    size: 92,
+    sets: ["YouTube", "Pandora", "iTunes", "Spotify"],
+    size: 21,
   },
   {
-    sets: ["YouTube", "Pandora", "Hype Machine", "Deezer"],
-    size: 41,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Hype Machine", "Deezer"],
-    size: 25,
-  },
-  {
-    sets: ["Spotify", "Pandora", "iTunes", "Deezer"],
+    sets: ["Deezer", "Pandora", "iTunes", "Spotify"],
     size: 67,
   },
   {
-    sets: ["YouTube", "Pandora", "iTunes", "Deezer"],
-    size: 23,
-  },
-  {
-    sets: ["YouTube", "Spotify", "iTunes", "Deezer"],
+    sets: ["Deezer", "YouTube", "iTunes", "Spotify"],
     size: 2714,
   },
   {
-    sets: ["YouTube", "Spotify", "Pandora", "Deezer"],
+    sets: ["Deezer", "YouTube", "Pandora", "Spotify"],
     size: 25,
   },
   {
-    sets: ["Spotify", "Pandora", "iTunes", "Hype Machine"],
-    size: 88,
-  },
-  {
-    sets: ["YouTube", "Pandora", "iTunes", "Hype Machine"],
-    size: 54,
-  },
-  {
-    sets: ["YouTube", "Spotify", "iTunes", "Hype Machine"],
-    size: 21,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Pandora", "Hype Machine"],
-    size: 44,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Pandora", "iTunes"],
-    size: 21,
-  },
-  {
-    sets: ["Pandora", "iTunes", "Hype Machine", "Deezer", "Amazon"],
-    size: 33,
-  },
-  {
-    sets: ["Spotify", "iTunes", "Hype Machine", "Deezer", "Amazon"],
-    size: 22,
-  },
-  {
-    sets: ["YouTube", "iTunes", "Hype Machine", "Deezer", "Amazon"],
-    size: 18,
-  },
-  {
-    sets: ["Spotify", "Pandora", "Hype Machine", "Deezer", "Amazon"],
-    size: 33,
-  },
-  {
-    sets: ["YouTube", "Pandora", "Hype Machine", "Deezer", "Amazon"],
+    sets: ["Deezer", "YouTube", "Pandora", "iTunes"],
     size: 23,
   },
   {
-    sets: ["YouTube", "Spotify", "Hype Machine", "Deezer", "Amazon"],
-    size: 15,
+    sets: ["YouTube", "Pandora", "iTunes", "Spotify", "Amazon"],
+    size: 17,
   },
   {
-    sets: ["Spotify", "Pandora", "iTunes", "Deezer", "Amazon"],
+    sets: ["Deezer", "Pandora", "iTunes", "Spotify", "Amazon"],
     size: 22,
   },
   {
-    sets: ["YouTube", "Pandora", "iTunes", "Deezer", "Amazon"],
-    size: 18,
-  },
-  {
-    sets: ["YouTube", "Spotify", "iTunes", "Deezer", "Amazon"],
+    sets: ["Deezer", "YouTube", "iTunes", "Spotify", "Amazon"],
     size: 1844,
   },
   {
-    sets: ["YouTube", "Spotify", "Pandora", "Deezer", "Amazon"],
+    sets: ["Deezer", "YouTube", "Pandora", "Spotify", "Amazon"],
     size: 15,
   },
   {
-    sets: ["Spotify", "Pandora", "iTunes", "Hype Machine", "Amazon"],
-    size: 31,
-  },
-  {
-    sets: ["YouTube", "Pandora", "iTunes", "Hype Machine", "Amazon"],
-    size: 44,
-  },
-  {
-    sets: ["YouTube", "Spotify", "iTunes", "Hype Machine", "Amazon"],
-    size: 17,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Pandora", "Hype Machine", "Amazon"],
-    size: 29,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Pandora", "iTunes", "Amazon"],
-    size: 17,
-  },
-  {
-    sets: ["Spotify", "Pandora", "iTunes", "Hype Machine", "Deezer"],
-    size: 67,
-  },
-  {
-    sets: ["YouTube", "Pandora", "iTunes", "Hype Machine", "Deezer"],
-    size: 23,
-  },
-  {
-    sets: ["YouTube", "Spotify", "iTunes", "Hype Machine", "Deezer"],
-    size: 14,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Pandora", "Hype Machine", "Deezer"],
-    size: 25,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Pandora", "iTunes", "Deezer"],
-    size: 14,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Pandora", "iTunes", "Hype Machine"],
-    size: 21,
-  },
-  {
-    sets: ["Spotify", "Pandora", "iTunes", "Hype Machine", "Deezer", "Amazon"],
-    size: 22,
-  },
-  {
-    sets: ["YouTube", "Pandora", "iTunes", "Hype Machine", "Deezer", "Amazon"],
+    sets: ["Deezer", "YouTube", "Pandora", "iTunes", "Amazon"],
     size: 18,
   },
   {
-    sets: ["YouTube", "Spotify", "iTunes", "Hype Machine", "Deezer", "Amazon"],
-    size: 11,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Pandora", "Hype Machine", "Deezer", "Amazon"],
-    size: 15,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Pandora", "iTunes", "Deezer", "Amazon"],
-    size: 11,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Pandora", "iTunes", "Hype Machine", "Amazon"],
-    size: 17,
-  },
-  {
-    sets: ["YouTube", "Spotify", "Pandora", "iTunes", "Hype Machine", "Deezer"],
+    sets: ["Deezer", "YouTube", "Pandora", "iTunes", "Spotify"],
     size: 14,
   },
   {
-    sets: [
-      "YouTube",
-      "Spotify",
-      "Pandora",
-      "iTunes",
-      "Hype Machine",
-      "Deezer",
-      "Amazon",
-    ],
+    sets: ["Deezer", "YouTube", "Pandora", "iTunes", "Spotify", "Amazon"],
     size: 11,
   },
 ];

@@ -7,9 +7,5 @@ export default [
   },
   { name: "Spotify", value: 39239 },
   { name: "YouTube", value: 6043 },
-  {
-    name: "Hype Machine",
-    value: 390,
-  },
   { name: "Pandora", value: 390 },
 ];
