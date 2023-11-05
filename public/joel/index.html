@@ -77,6 +77,28 @@
         border-bottom-right-radius: 3rem;
         padding-right: 1rem;
       }
+
+      .tooltip {
+        position: absolute;
+        background-color: white;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+        transform: translate(10px, -50%);
+      }
+
+      .tooltip.venn {
+        display: flex;
+        gap: 0.2rem;
+        flex-direction: column;
+      }
+
+      .tooltip.venn .sets {
+        font-size: smaller;
+        color: #4b4b57;
+      }
     </style>
     <title>Services de streaming</title>
   </head>

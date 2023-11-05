@@ -18,6 +18,9 @@ export const drawBars = () => {
 
   let data = [];
 
+  // add a tooltip
+  const tooltip = d3.select("body").append("div").attr("class", "bar tooltip");
+
   const draw = () => {
     data = songsByStreamingService.filter((d) => filter.has(d.name));
 
@@ -188,6 +191,39 @@ export const drawBars = () => {
               "filter-button" + (filter.has(d.name) ? " active" : " inactive"),
           ),
       );
+
+    // add listeners to all the groups to display tooltip on mouseenter
+    container
+      .selectAll(".bar")
+      .on("mouseenter", function (event, d) {
+        // Display a tooltip with the current size
+        tooltip.transition().duration(400).style("opacity", 0.9);
+        tooltip.text(d + " songs");
+
+        // highlight the current path
+        const selection = d3.select(this).transition("tooltip").duration(400);
+        selection
+          .select("path")
+          .style("stroke-width", 3)
+          .style("fill-opacity", 0.1)
+          .style("stroke-opacity", 1);
+      })
+
+      .on("mousemove", function () {
+        tooltip
+          .style("left", event.pageX + "px")
+          .style("top", event.pageY - 28 + "px");
+      })
+
+      .on("mouseleave", function () {
+        tooltip.transition().duration(400).style("opacity", 0);
+        const selection = d3.select(this).transition("tooltip").duration(400);
+        selection
+          .select("path")
+          .style("stroke-width", 0)
+          .style("fill-opacity", 0.0)
+          .style("stroke-opacity", 0);
+      });
   };
 
   container
